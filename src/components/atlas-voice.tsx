@@ -65,13 +65,11 @@ export function TalkToYourBusiness() {
               Talk to Your <span className="text-gradient-atlas">Business.</span>
             </h2>
             <p className="mt-6 max-w-xl text-lg text-white/70 md:text-xl">
-              Your company already knows the answers. Atlas lets you ask
-              naturally.
+              Your company already knows the answers. Atlas lets you ask naturally.
             </p>
             <p className="mt-4 max-w-xl text-base text-white/50">
-              No dashboards. No searching. Just ask. Atlas understands your
-              documents, conversations, jobs, claims, and workflows, then
-              answers instantly.
+              No dashboards. No searching. Just ask. Atlas understands your documents,
+              conversations, jobs, claims, and workflows, then answers instantly.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -125,10 +123,8 @@ export function TalkToYourBusiness() {
                 </div>
                 <div className="mt-6 text-atlas-cyan-soft">Atlas</div>
                 <div className="text-white/75">
-                  Supplements are delayed an average of{" "}
-                  <span className="text-white">11 days</span> — roughly{" "}
-                  <span className="text-white">$186,000</span> in unrealized
-                  revenue…
+                  Supplements are delayed an average of <span className="text-white">11 days</span>{" "}
+                  — roughly <span className="text-white">$186,000</span> in unrealized revenue…
                 </div>
               </div>
 
@@ -165,10 +161,7 @@ function StaticWave() {
 
 function LiveWave({ active }: { active: boolean }) {
   const bars = 28;
-  const seeds = useMemo(
-    () => Array.from({ length: bars }).map(() => Math.random()),
-    [],
-  );
+  const seeds = useMemo(() => Array.from({ length: bars }).map(() => Math.random()), []);
   const [tick, setTick] = useState(0);
   useEffect(() => {
     if (!active) return;
@@ -180,9 +173,7 @@ function LiveWave({ active }: { active: boolean }) {
     <div className="flex h-16 items-end justify-center gap-[3px]">
       {seeds.map((s, i) => {
         const phase = (tick + i) * 0.35;
-        const amp = active
-          ? 0.4 + Math.abs(Math.sin(phase + s * 6)) * 0.6
-          : 0.15 + s * 0.1;
+        const amp = active ? 0.4 + Math.abs(Math.sin(phase + s * 6)) * 0.6 : 0.15 + s * 0.1;
         return (
           <span
             key={i}
@@ -201,8 +192,7 @@ function LiveWave({ active }: { active: boolean }) {
 /* ---------------- Speech helpers ---------------- */
 
 function pickAtlasVoice(): SpeechSynthesisVoice | null {
-  if (typeof window === "undefined" || !("speechSynthesis" in window))
-    return null;
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return null;
   const preferred = [
@@ -238,6 +228,7 @@ export function VoiceExperience() {
   const [micListening, setMicListening] = useState(false);
   const streamTimers = useRef<number[]>([]);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
 
   // Warm up voices list (some browsers load asynchronously).
@@ -253,8 +244,7 @@ export function VoiceExperience() {
   useEffect(() => {
     const onOpen = () => setOpen(true);
     window.addEventListener(OPEN_EVENT, onOpen as EventListener);
-    return () =>
-      window.removeEventListener(OPEN_EVENT, onOpen as EventListener);
+    return () => window.removeEventListener(OPEN_EVENT, onOpen as EventListener);
   }, []);
 
   useEffect(() => {
@@ -309,11 +299,7 @@ export function VoiceExperience() {
     }
   }, [open]);
 
-  const speakAtlas = (
-    text: string,
-    onWord?: (charIndex: number) => void,
-    onDone?: () => void,
-  ) => {
+  const speakAtlas = (text: string, onWord?: (charIndex: number) => void, onDone?: () => void) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
       onDone?.();
       return false;
@@ -350,10 +336,7 @@ export function VoiceExperience() {
   const runDemo = (userText: string, atlasText: string) => {
     clearTimers();
     stopSpeech();
-    setTurns((prev) => [
-      ...prev,
-      { role: "user", text: userText, done: true },
-    ]);
+    setTurns((prev) => [...prev, { role: "user", text: userText, done: true }]);
 
     const stages: { label: string; delay: number }[] = [
       { label: "Listening…", delay: 0 },
@@ -370,10 +353,7 @@ export function VoiceExperience() {
     const words = atlasText.split(" ");
 
     const startId = window.setTimeout(() => {
-      setTurns((prev) => [
-        ...prev,
-        { role: "atlas", text: atlasText, streamed: "", done: false },
-      ]);
+      setTurns((prev) => [...prev, { role: "atlas", text: atlasText, streamed: "", done: false }]);
 
       const revealUpTo = (charIndex: number) => {
         setTurns((prev) => {
@@ -399,11 +379,7 @@ export function VoiceExperience() {
         setStatus("");
       };
 
-      const spoke = speakAtlas(
-        atlasText,
-        (charIndex) => revealUpTo(charIndex),
-        finish,
-      );
+      const spoke = speakAtlas(atlasText, (charIndex) => revealUpTo(charIndex), finish);
 
       if (!spoke) {
         // Fallback: paced word reveal when TTS unavailable.
@@ -431,9 +407,8 @@ export function VoiceExperience() {
 
   const startMicRecognition = (): boolean => {
     if (typeof window === "undefined") return false;
-    const SR =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) return false;
     try {
       const rec = new SR();
@@ -444,6 +419,7 @@ export function VoiceExperience() {
       recognitionRef.current = rec;
       setMicListening(true);
       setStatus("Listening…");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       rec.onresult = (e: any) => {
         const transcript = e.results?.[0]?.[0]?.transcript?.trim();
         setMicListening(false);
@@ -502,9 +478,7 @@ export function VoiceExperience() {
     const text = typedInput.trim();
     if (!text) return;
     setTypedInput("");
-    const match = DEMOS.find(
-      (d) => d.user.toLowerCase() === text.toLowerCase(),
-    );
+    const match = DEMOS.find((d) => d.user.toLowerCase() === text.toLowerCase());
     const atlas =
       match?.atlas ??
       "I'm pulling that from your company knowledge now. In the live product, Atlas answers from your real jobs, claims, documents, and conversations.";
@@ -519,10 +493,7 @@ export function VoiceExperience() {
     setStatus("");
   };
 
-  const listening =
-    micListening ||
-    status === "Listening…" ||
-    status === "Understanding…";
+  const listening = micListening || status === "Listening…" || status === "Understanding…";
   const waveActive = listening || speaking || !!status;
   const displayStatus = speaking && !status ? "Speaking…" : status;
 
@@ -601,18 +572,11 @@ export function VoiceExperience() {
                 ) : (
                   <ul className="space-y-5">
                     {turns.map((t, i) => (
-                      <li
-                        key={i}
-                        className={
-                          t.role === "user" ? "text-right" : "text-left"
-                        }
-                      >
+                      <li key={i} className={t.role === "user" ? "text-right" : "text-left"}>
                         <div
                           className={
                             "text-[10px] uppercase tracking-[0.24em] " +
-                            (t.role === "user"
-                              ? "text-white/40"
-                              : "text-atlas-cyan-soft")
+                            (t.role === "user" ? "text-white/40" : "text-atlas-cyan-soft")
                           }
                         >
                           {t.role === "user" ? "You" : "Atlas"}
@@ -649,14 +613,10 @@ export function VoiceExperience() {
                   <span
                     className={
                       "inline-block h-1.5 w-1.5 rounded-full " +
-                      (waveActive
-                        ? "bg-atlas-cyan animate-pulse"
-                        : "bg-white/20")
+                      (waveActive ? "bg-atlas-cyan animate-pulse" : "bg-white/20")
                     }
                   />
-                  <span className="text-white/60">
-                    {displayStatus || "Idle · Tap to Speak"}
-                  </span>
+                  <span className="text-white/60">{displayStatus || "Idle · Tap to Speak"}</span>
                 </div>
               </div>
 
@@ -703,10 +663,7 @@ export function VoiceExperience() {
                     </div>
                   </div>
                 ) : (
-                  <form
-                    onSubmit={handleSendTyped}
-                    className="flex flex-col gap-3"
-                  >
+                  <form onSubmit={handleSendTyped} className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
                       <input
                         autoFocus

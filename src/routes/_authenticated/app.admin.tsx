@@ -24,14 +24,22 @@ export const Route = createFileRoute("/_authenticated/app/admin")({
 
 type UserRoleRow = { id: string; user_id: string; role: AppRole; created_at: string };
 type AuditRow = {
-  id: string; actor_email: string | null; action: string;
-  entity_type: string | null; entity_id: string | null;
-  detail: Record<string, unknown> | null; created_at: string;
+  id: string;
+  actor_email: string | null;
+  action: string;
+  entity_type: string | null;
+  entity_id: string | null;
+  detail: Record<string, unknown> | null;
+  created_at: string;
 };
 type Settings = {
-  id: string; name: string; logo_url: string | null;
-  primary_color: string | null; contact_email: string | null;
-  contact_phone: string | null; timezone: string | null;
+  id: string;
+  name: string;
+  logo_url: string | null;
+  primary_color: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  timezone: string | null;
   integrations: Record<string, unknown>;
 };
 
@@ -39,7 +47,11 @@ function Page() {
   const { isAdmin, loading } = useRoles();
 
   if (loading) {
-    return <AppShell title="Admin" subtitle="Team, roles, settings, audit"><LoadingList rows={3} /></AppShell>;
+    return (
+      <AppShell title="Admin" subtitle="Team, roles, settings, audit">
+        <LoadingList rows={3} />
+      </AppShell>
+    );
   }
   if (!isAdmin) {
     return (
@@ -68,10 +80,18 @@ function Page() {
             <TabsTrigger value="audit">Audit Log</TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="users" className="mt-4"><UsersPanel /></TabsContent>
-        <TabsContent value="company" className="mt-4"><CompanyPanel /></TabsContent>
-        <TabsContent value="integrations" className="mt-4"><IntegrationsPanel /></TabsContent>
-        <TabsContent value="audit" className="mt-4"><AuditPanel /></TabsContent>
+        <TabsContent value="users" className="mt-4">
+          <UsersPanel />
+        </TabsContent>
+        <TabsContent value="company" className="mt-4">
+          <CompanyPanel />
+        </TabsContent>
+        <TabsContent value="integrations" className="mt-4">
+          <IntegrationsPanel />
+        </TabsContent>
+        <TabsContent value="audit" className="mt-4">
+          <AuditPanel />
+        </TabsContent>
       </Tabs>
     </AppShell>
   );
@@ -88,9 +108,18 @@ function UsersPanel() {
       ]);
       if (rolesRes.error) throw rolesRes.error;
       const roles = (rolesRes.data ?? []) as UserRoleRow[];
-      const profiles = (profilesRes.data ?? []) as { id: string; email: string | null; full_name: string | null; company_name: string | null }[];
-      const byUser = new Map<string, { email: string | null; full_name: string | null; roles: AppRole[] }>();
-      for (const p of profiles) byUser.set(p.id, { email: p.email, full_name: p.full_name, roles: [] });
+      const profiles = (profilesRes.data ?? []) as {
+        id: string;
+        email: string | null;
+        full_name: string | null;
+        company_name: string | null;
+      }[];
+      const byUser = new Map<
+        string,
+        { email: string | null; full_name: string | null; roles: AppRole[] }
+      >();
+      for (const p of profiles)
+        byUser.set(p.id, { email: p.email, full_name: p.full_name, roles: [] });
       for (const r of roles) {
         const existing = byUser.get(r.user_id) ?? { email: null, full_name: null, roles: [] };
         existing.roles.push(r.role);
@@ -102,7 +131,11 @@ function UsersPanel() {
 
   async function toggleRole(user_id: string, role: AppRole, currentlyHas: boolean) {
     if (currentlyHas) {
-      const { error } = await db.from("user_roles").delete().eq("user_id", user_id).eq("role", role);
+      const { error } = await db
+        .from("user_roles")
+        .delete()
+        .eq("user_id", user_id)
+        .eq("role", role);
       if (error) return toast.error(error.message);
       await logAudit("role.revoke", "user", user_id, { role });
     } else {
@@ -116,7 +149,8 @@ function UsersPanel() {
 
   if (isLoading) return <LoadingList rows={4} />;
   if (error) return <ErrorState message={(error as Error).message} onRetry={() => refetch()} />;
-  if (!data?.length) return <EmptyState title="No users yet" hint="Users will appear as they sign up." />;
+  if (!data?.length)
+    return <EmptyState title="No users yet" hint="Users will appear as they sign up." />;
 
   return (
     <div className="grid gap-3">
@@ -128,10 +162,18 @@ function UsersPanel() {
               <p className="text-xs text-muted-foreground truncate">{u.email}</p>
               <div className="flex gap-1 mt-1 flex-wrap">
                 {u.roles.length === 0 && <Badge variant="outline">no role</Badge>}
-                {u.roles.map((r) => <Badge key={r} variant="secondary">{r}</Badge>)}
+                {u.roles.map((r) => (
+                  <Badge key={r} variant="secondary">
+                    {r}
+                  </Badge>
+                ))}
               </div>
             </div>
-            <div className="flex gap-2 flex-wrap" role="group" aria-label={`Roles for ${u.email ?? u.user_id}`}>
+            <div
+              className="flex gap-2 flex-wrap"
+              role="group"
+              aria-label={`Roles for ${u.email ?? u.user_id}`}
+            >
               {(["admin", "manager", "user"] as AppRole[]).map((r) => {
                 const has = u.roles.includes(r);
                 return (
@@ -197,27 +239,54 @@ function CompanyPanel() {
         <div className="grid sm:grid-cols-2 gap-3">
           <div>
             <Label htmlFor="cn">Company name</Label>
-            <Input id="cn" value={merged.name ?? ""} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
+            <Input
+              id="cn"
+              value={merged.name ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            />
           </div>
           <div>
             <Label htmlFor="tz">Timezone</Label>
-            <Input id="tz" value={merged.timezone ?? ""} onChange={(e) => setForm((f) => ({ ...f, timezone: e.target.value }))} placeholder="America/New_York" />
+            <Input
+              id="tz"
+              value={merged.timezone ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, timezone: e.target.value }))}
+              placeholder="America/New_York"
+            />
           </div>
           <div>
             <Label htmlFor="ce">Contact email</Label>
-            <Input id="ce" type="email" value={merged.contact_email ?? ""} onChange={(e) => setForm((f) => ({ ...f, contact_email: e.target.value }))} />
+            <Input
+              id="ce"
+              type="email"
+              value={merged.contact_email ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, contact_email: e.target.value }))}
+            />
           </div>
           <div>
             <Label htmlFor="cp">Contact phone</Label>
-            <Input id="cp" value={merged.contact_phone ?? ""} onChange={(e) => setForm((f) => ({ ...f, contact_phone: e.target.value }))} />
+            <Input
+              id="cp"
+              value={merged.contact_phone ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, contact_phone: e.target.value }))}
+            />
           </div>
           <div>
             <Label htmlFor="lu">Logo URL</Label>
-            <Input id="lu" value={merged.logo_url ?? ""} onChange={(e) => setForm((f) => ({ ...f, logo_url: e.target.value }))} />
+            <Input
+              id="lu"
+              value={merged.logo_url ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, logo_url: e.target.value }))}
+            />
           </div>
           <div>
             <Label htmlFor="pc">Brand color</Label>
-            <Input id="pc" value={merged.primary_color ?? ""} onChange={(e) => setForm((f) => ({ ...f, primary_color: e.target.value }))} placeholder="#3B82F6" />
+            <Input
+              id="pc"
+              value={merged.primary_color ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, primary_color: e.target.value }))}
+              placeholder="#3B82F6"
+            />
           </div>
         </div>
         <Button onClick={save}>Save changes</Button>
@@ -264,16 +333,30 @@ function AuditPanel() {
     },
   });
   const filtered = (data ?? []).filter(
-    (r) => !q || `${r.action} ${r.actor_email ?? ""} ${r.entity_type ?? ""}`.toLowerCase().includes(q.toLowerCase()),
+    (r) =>
+      !q ||
+      `${r.action} ${r.actor_email ?? ""} ${r.entity_type ?? ""}`
+        .toLowerCase()
+        .includes(q.toLowerCase()),
   );
   if (isLoading) return <LoadingList rows={5} />;
   if (error) return <ErrorState message={(error as Error).message} onRetry={() => refetch()} />;
   return (
     <div className="space-y-3">
-      <label htmlFor="audit-filter" className="sr-only">Filter audit log</label>
-      <Input id="audit-filter" placeholder="Filter by action, user, entity…" value={q} onChange={(e) => setQ(e.target.value)} />
+      <label htmlFor="audit-filter" className="sr-only">
+        Filter audit log
+      </label>
+      <Input
+        id="audit-filter"
+        placeholder="Filter by action, user, entity…"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+      />
       {filtered.length === 0 ? (
-        <EmptyState title="No audit entries" hint="Actions logged from admin surfaces show up here." />
+        <EmptyState
+          title="No audit entries"
+          hint="Actions logged from admin surfaces show up here."
+        />
       ) : (
         <div className="grid gap-2">
           {filtered.map((r) => (
@@ -282,10 +365,13 @@ function AuditPanel() {
                 <div className="min-w-0">
                   <p className="font-mono text-xs">{r.action}</p>
                   <p className="text-xs text-muted-foreground truncate">
-                    {r.actor_email ?? "system"} • {r.entity_type ?? "—"} {r.entity_id ? `#${r.entity_id.slice(0, 8)}` : ""}
+                    {r.actor_email ?? "system"} • {r.entity_type ?? "—"}{" "}
+                    {r.entity_id ? `#${r.entity_id.slice(0, 8)}` : ""}
                   </p>
                 </div>
-                <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(r.created_at).toLocaleString()}
+                </p>
               </CardContent>
             </Card>
           ))}

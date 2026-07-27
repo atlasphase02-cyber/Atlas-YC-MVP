@@ -4,8 +4,21 @@ import { Card, CardContent } from "@/components/ui/card.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
 import { LoadingList, EmptyState, ErrorState } from "@/components/data-states.tsx";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { db, currentUserId, type Appointment, type AppointmentKind } from "@/lib/atlas-db.ts";
@@ -22,7 +35,8 @@ function Page() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["appointments", "list"],
     queryFn: async (): Promise<Appointment[]> => {
-      const { data, error } = await db.from("appointments")
+      const { data, error } = await db
+        .from("appointments")
         .select("*")
         .gte("starts_at", new Date(Date.now() - 24 * 3600_000).toISOString())
         .order("starts_at");
@@ -32,9 +46,15 @@ function Page() {
   });
 
   return (
-    <PageStub title="Calendar" subtitle="Appointments, inspections, deadlines" askPrompt="Schedule an inspection tomorrow morning">
+    <PageStub
+      title="Calendar"
+      subtitle="Appointments, inspections, deadlines"
+      askPrompt="Schedule an inspection tomorrow morning"
+    >
       <div className="flex justify-end">
-        <NewAppointmentDialog onCreated={() => qc.invalidateQueries({ queryKey: ["appointments"] })} />
+        <NewAppointmentDialog
+          onCreated={() => qc.invalidateQueries({ queryKey: ["appointments"] })}
+        />
       </div>
       {isLoading && <LoadingList />}
       {error && <ErrorState message={(error as Error).message} onRetry={() => refetch()} />}
@@ -49,7 +69,9 @@ function Page() {
               <Card key={e.id} className="panel-atlas border-0">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground">{d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}
+                    </p>
                     <Badge variant="secondary">{e.kind}</Badge>
                   </div>
                   <p className="font-medium">{e.title}</p>
@@ -66,7 +88,13 @@ function Page() {
 
 function NewAppointmentDialog({ onCreated }: { onCreated: () => void }) {
   const [open, setOpen] = useState(false);
-  const [f, setF] = useState({ title: "", kind: "inspection" as AppointmentKind, starts_at: "", who: "", location: "" });
+  const [f, setF] = useState({
+    title: "",
+    kind: "inspection" as AppointmentKind,
+    starts_at: "",
+    who: "",
+    location: "",
+  });
   const create = useMutation({
     mutationFn: async () => {
       const uid = await currentUserId();
@@ -92,23 +120,62 @@ function NewAppointmentDialog({ onCreated }: { onCreated: () => void }) {
   });
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><Button size="sm"><Plus className="mr-1 h-4 w-4" /> New event</Button></DialogTrigger>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <Plus className="mr-1 h-4 w-4" /> New event
+        </Button>
+      </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>New event</DialogTitle></DialogHeader>
+        <DialogHeader>
+          <DialogTitle>New event</DialogTitle>
+        </DialogHeader>
         <div className="space-y-3">
-          <Input aria-label="Event title" placeholder="Title" value={f.title} onChange={(e) => setF({ ...f, title: e.target.value })} />
+          <Input
+            aria-label="Event title"
+            placeholder="Title"
+            value={f.title}
+            onChange={(e) => setF({ ...f, title: e.target.value })}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Select value={f.kind} onValueChange={(v) => setF({ ...f, kind: v as AppointmentKind })}>
-              <SelectTrigger aria-label="Event kind"><SelectValue /></SelectTrigger>
-              <SelectContent>{KINDS.map((k) => <SelectItem key={k} value={k}>{k}</SelectItem>)}</SelectContent>
+            <Select
+              value={f.kind}
+              onValueChange={(v) => setF({ ...f, kind: v as AppointmentKind })}
+            >
+              <SelectTrigger aria-label="Event kind">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {KINDS.map((k) => (
+                  <SelectItem key={k} value={k}>
+                    {k}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
-            <Input aria-label="Start date and time" type="datetime-local" value={f.starts_at} onChange={(e) => setF({ ...f, starts_at: e.target.value })} />
+            <Input
+              aria-label="Start date and time"
+              type="datetime-local"
+              value={f.starts_at}
+              onChange={(e) => setF({ ...f, starts_at: e.target.value })}
+            />
           </div>
-          <Input aria-label="Who" placeholder="Who" value={f.who} onChange={(e) => setF({ ...f, who: e.target.value })} />
-          <Input aria-label="Location" placeholder="Location" value={f.location} onChange={(e) => setF({ ...f, location: e.target.value })} />
+          <Input
+            aria-label="Who"
+            placeholder="Who"
+            value={f.who}
+            onChange={(e) => setF({ ...f, who: e.target.value })}
+          />
+          <Input
+            aria-label="Location"
+            placeholder="Location"
+            value={f.location}
+            onChange={(e) => setF({ ...f, location: e.target.value })}
+          />
         </div>
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button onClick={() => create.mutate()} disabled={!f.title.trim() || create.isPending}>
             {create.isPending ? "Saving..." : "Schedule"}
           </Button>

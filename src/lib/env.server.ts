@@ -8,16 +8,9 @@
  * a clear message when a required secret is missing in production.
  */
 
-type RequiredEnv =
-  | "SUPABASE_URL"
-  | "SUPABASE_PUBLISHABLE_KEY"
-  | "LOVABLE_API_KEY";
+type RequiredEnv = "SUPABASE_URL" | "SUPABASE_PUBLISHABLE_KEY" | "LOVABLE_API_KEY";
 
-const REQUIRED: RequiredEnv[] = [
-  "SUPABASE_URL",
-  "SUPABASE_PUBLISHABLE_KEY",
-  "LOVABLE_API_KEY",
-];
+const REQUIRED: RequiredEnv[] = ["SUPABASE_URL", "SUPABASE_PUBLISHABLE_KEY", "LOVABLE_API_KEY"];
 
 export function assertServerEnv(extra: string[] = []): void {
   const missing = [...REQUIRED, ...extra].filter((k) => !process.env[k]);

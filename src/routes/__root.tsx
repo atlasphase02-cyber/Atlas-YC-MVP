@@ -83,7 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Atlas is the AI operating system for insurance restoration companies. It sits above your existing stack — CRM, estimating, claims, photos, documents, emails, notes, supplements, team knowledge — and turns it into one connected intelligence layer.",
       },
-      { property: "og:title", content: "Atlas — The AI Operating System for Insurance Restoration" },
+      {
+        property: "og:title",
+        content: "Atlas — The AI Operating System for Insurance Restoration",
+      },
       {
         property: "og:description",
         content:
@@ -91,10 +94,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Atlas — The AI Operating System for Insurance Restoration" },
-      { name: "twitter:description", content: "Atlas is the AI operating system for insurance restoration companies. It sits above your existing stack — CRM, estimating, claims, photos, documents, emails, notes, supplements, team knowledge — and turns it into one connected intelligence layer." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3f01f486-1d00-41df-b447-a725ede9c36d/id-preview-0841cdfa--fb235be6-0a5c-4b19-bf40-521a7c4c82f8.lovable.app-1784496669790.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3f01f486-1d00-41df-b447-a725ede9c36d/id-preview-0841cdfa--fb235be6-0a5c-4b19-bf40-521a7c4c82f8.lovable.app-1784496669790.png" },
+      {
+        name: "twitter:title",
+        content: "Atlas — The AI Operating System for Insurance Restoration",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Atlas is the AI operating system for insurance restoration companies. It sits above your existing stack — CRM, estimating, claims, photos, documents, emails, notes, supplements, team knowledge — and turns it into one connected intelligence layer.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3f01f486-1d00-41df-b447-a725ede9c36d/id-preview-0841cdfa--fb235be6-0a5c-4b19-bf40-521a7c4c82f8.lovable.app-1784496669790.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3f01f486-1d00-41df-b447-a725ede9c36d/id-preview-0841cdfa--fb235be6-0a5c-4b19-bf40-521a7c4c82f8.lovable.app-1784496669790.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -106,7 +124,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -143,7 +160,9 @@ function RootComponent() {
       });
       return () => data.subscription.unsubscribe();
     });
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [router, queryClient]);
 
   return (

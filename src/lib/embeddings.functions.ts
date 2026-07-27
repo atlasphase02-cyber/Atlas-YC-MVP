@@ -33,27 +33,47 @@ async function contentFor(supabase: any, row: QueueRow): Promise<string | null> 
   const t = row.entity_type;
   const id = row.entity_id;
   if (t === "claims") {
-    const { data } = await supabase.from("claims").select("claim_number, description, status").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("claims")
+      .select("claim_number, description, status")
+      .eq("id", id)
+      .maybeSingle();
     if (!data) return null;
     return `Claim ${data.claim_number}. Status: ${data.status}. ${data.description ?? ""}`;
   }
   if (t === "customers") {
-    const { data } = await supabase.from("customers").select("name, email, phone, address, city, state, notes").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("customers")
+      .select("name, email, phone, address, city, state, notes")
+      .eq("id", id)
+      .maybeSingle();
     if (!data) return null;
     return `Customer ${data.name}. ${data.email ?? ""} ${data.phone ?? ""} ${data.address ?? ""} ${data.city ?? ""} ${data.state ?? ""}. ${data.notes ?? ""}`;
   }
   if (t === "adjusters") {
-    const { data } = await supabase.from("adjusters").select("name, email, phone, notes").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("adjusters")
+      .select("name, email, phone, notes")
+      .eq("id", id)
+      .maybeSingle();
     if (!data) return null;
     return `Adjuster ${data.name}. ${data.email ?? ""} ${data.phone ?? ""}. ${data.notes ?? ""}`;
   }
   if (t === "documents") {
-    const { data } = await supabase.from("documents").select("name, folder, tags").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("documents")
+      .select("name, folder, tags")
+      .eq("id", id)
+      .maybeSingle();
     if (!data) return null;
     return `Document ${data.name} in ${data.folder}. Tags: ${(data.tags ?? []).join(", ")}`;
   }
   if (t === "supplements") {
-    const { data } = await supabase.from("supplements").select("summary, status, ai_summary").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("supplements")
+      .select("summary, status, ai_summary")
+      .eq("id", id)
+      .maybeSingle();
     if (!data) return null;
     return `Supplement. Status ${data.status}. ${data.summary ?? ""} ${data.ai_summary ?? ""}`;
   }
@@ -62,7 +82,11 @@ async function contentFor(supabase: any, row: QueueRow): Promise<string | null> 
     return data?.body ?? null;
   }
   if (t === "conversations") {
-    const { data } = await supabase.from("conversations").select("title").eq("id", id).maybeSingle();
+    const { data } = await supabase
+      .from("conversations")
+      .select("title")
+      .eq("id", id)
+      .maybeSingle();
     return data?.title ?? null;
   }
   return null;
@@ -70,7 +94,9 @@ async function contentFor(supabase: any, row: QueueRow): Promise<string | null> 
 
 export const processEmbedQueue = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: { limit?: number } | undefined) => ({ limit: Math.min(Math.max(i?.limit ?? 20, 1), 50) }))
+  .inputValidator((i: { limit?: number } | undefined) => ({
+    limit: Math.min(Math.max(i?.limit ?? 20, 1), 50),
+  }))
   .handler(async ({ data, context }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const supabase = context.supabase as any;
@@ -96,14 +122,16 @@ export const processEmbedQueue = createServerFn({ method: "POST" })
         }
         const [vec] = await embedBatch([content.slice(0, 8000)]);
         const pgv = toPgVector(vec);
-        const upd = await supabase.from(row.entity_type)
+        const upd = await supabase
+          .from(row.entity_type)
           .update({ embedding: pgv, embedding_updated_at: new Date().toISOString() })
           .eq("id", row.entity_id);
         if (upd.error) throw upd.error;
         await supabase.from("embedding_queue").delete().eq("id", row.id);
         processed++;
       } catch (e) {
-        await supabase.from("embedding_queue")
+        await supabase
+          .from("embedding_queue")
           .update({ attempts: row.attempts + 1, last_error: String(e).slice(0, 500) })
           .eq("id", row.id);
       }

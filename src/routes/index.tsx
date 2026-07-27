@@ -65,7 +65,6 @@ function AtlasMark({ className = "" }: { className?: string }) {
   );
 }
 
-
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-atlas-cyan/80">
@@ -75,13 +74,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PrimaryCta({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
@@ -98,13 +91,7 @@ function PrimaryCta({
   );
 }
 
-function GhostCta({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function GhostCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
@@ -127,9 +114,7 @@ function SectionShell({
   return (
     <section
       id={id}
-      className={
-        "relative w-full px-6 py-24 md:px-10 md:py-36 lg:px-16 " + className
-      }
+      className={"relative w-full px-6 py-24 md:px-10 md:py-36 lg:px-16 " + className}
     >
       <div className="relative mx-auto max-w-7xl">{children}</div>
     </section>
@@ -154,7 +139,7 @@ function PilotModal() {
     // Intercept any anchor pointing to the pilot placeholder
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest?.(
-        'a[href="#pilot"], button[data-pilot-open]'
+        'a[href="#pilot"], button[data-pilot-open]',
       );
       if (el) {
         e.preventDefault();
@@ -187,7 +172,7 @@ function PilotModal() {
     setSubmitting(true);
     // Placeholder submission — wire to backend later.
     const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-    // eslint-disable-next-line no-console
+
     console.log("[Atlas Pilot Application]", data);
     await new Promise((r) => setTimeout(r, 600));
     setSubmitting(false);
@@ -242,10 +227,9 @@ function PilotModal() {
             Apply for Pilot Access
           </h2>
           <p className="mt-3 max-w-lg text-[14px] leading-relaxed text-white/65">
-            Atlas is currently accepting a small number of insurance
-            restoration companies as design partners. Selected teams work
-            directly with us to shape the platform and get early access to
-            supplement intelligence, claim context, and executive signal.
+            Atlas is currently accepting a small number of insurance restoration companies as design
+            partners. Selected teams work directly with us to shape the platform and get early
+            access to supplement intelligence, claim context, and executive signal.
           </p>
         </div>
 
@@ -256,9 +240,8 @@ function PilotModal() {
                 Application received
               </div>
               <p className="mt-3 text-[15px] leading-relaxed text-white/85">
-                Thank you for applying to the Atlas Design Partner Programme.
-                We are reviewing applications and will contact selected
-                companies with next steps.
+                Thank you for applying to the Atlas Design Partner Programme. We are reviewing
+                applications and will contact selected companies with next steps.
               </p>
             </div>
             <div className="mt-6 flex justify-end">
@@ -272,26 +255,12 @@ function PilotModal() {
             </div>
           </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="relative space-y-5 px-6 pb-10 pt-8 md:px-10"
-          >
+          <form onSubmit={handleSubmit} className="relative space-y-5 px-6 pb-10 pt-8 md:px-10">
             <div className="grid gap-4 md:grid-cols-2">
               <Field label="Name" name="name" required autoComplete="name" />
-              <Field
-                label="Company"
-                name="company"
-                required
-                autoComplete="organization"
-              />
+              <Field label="Company" name="company" required autoComplete="organization" />
               <Field label="Role" name="role" required />
-              <Field
-                label="Email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-              />
+              <Field label="Email" name="email" type="email" required autoComplete="email" />
             </div>
 
             <Field
@@ -326,9 +295,8 @@ function PilotModal() {
 
             <div>
               <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
-                If Atlas could automatically identify legitimate missed
-                supplement opportunities, would you be interested in
-                participating in the pilot?
+                If Atlas could automatically identify legitimate missed supplement opportunities,
+                would you be interested in participating in the pilot?
               </label>
               <div className="flex flex-wrap gap-2">
                 {["Yes", "Maybe", "No"].map((opt) => (
@@ -449,7 +417,6 @@ function TextareaField({
 /* Nav                                                                 */
 /* ------------------------------------------------------------------ */
 
-
 /* Nav                                                                 */
 /* ------------------------------------------------------------------ */
 
@@ -465,10 +432,7 @@ function Nav() {
           </span>
         </a>
 
-        <nav
-          aria-label="Primary"
-          className="pointer-events-auto hidden items-center gap-8 md:flex"
-        >
+        <nav aria-label="Primary" className="pointer-events-auto hidden items-center gap-8 md:flex">
           {[
             ["Intelligence", "#intelligence"],
             ["Supplements", "#supplements"],
@@ -496,7 +460,6 @@ function Nav() {
             className="rounded-full border border-atlas-cyan/40 bg-atlas-cyan/10 px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-atlas-cyan transition hover:border-atlas-cyan hover:bg-atlas-cyan/15"
           >
             Apply for Pilot
-
           </a>
         </div>
       </div>
@@ -569,8 +532,7 @@ function HeroProductUI() {
                 >
                   <span
                     className={
-                      "h-1.5 w-1.5 rounded-full " +
-                      (active ? "bg-atlas-cyan" : "bg-white/20")
+                      "h-1.5 w-1.5 rounded-full " + (active ? "bg-atlas-cyan" : "bg-white/20")
                     }
                   />
                   {label}
@@ -644,10 +606,9 @@ function HeroProductUI() {
               </div>
               <p className="text-[14px] leading-relaxed text-white/85">
                 Revenue is stalling on{" "}
-                <span className="font-semibold text-white">12 supplements</span>{" "}
-                awaiting carrier approval — carrier response is{" "}
-                <span className="text-atlas-violet">2.4× slower</span> than your
-                90-day average.
+                <span className="font-semibold text-white">12 supplements</span> awaiting carrier
+                approval — carrier response is{" "}
+                <span className="text-atlas-violet">2.4× slower</span> than your 90-day average.
               </p>
               <div className="mt-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-atlas-cyan/80">
                 Review 6 highest-value first →
@@ -709,17 +670,15 @@ function Hero() {
           </h1>
 
           <p className="mx-auto mt-8 max-w-2xl text-balance text-base leading-relaxed text-white/65 md:text-lg">
-            Atlas sits above the software your restoration company already
-            runs — CRM, estimating, claims, photos, documents, emails, notes,
-            supplements, and team knowledge — and turns all of it into one
-            connected intelligence layer.
+            Atlas sits above the software your restoration company already runs — CRM, estimating,
+            claims, photos, documents, emails, notes, supplements, and team knowledge — and turns
+            all of it into one connected intelligence layer.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <PrimaryCta href={PILOT_URL}>Apply for Pilot Access</PrimaryCta>
             <GhostCta href="#intelligence">Explore Atlas</GhostCta>
           </div>
-
         </div>
 
         <div className="mt-20 md:mt-28">
@@ -731,10 +690,7 @@ function Hero() {
             Sits above
           </span>
           {["JobNimbus", "CompanyCam", "Xactimate", "QuickBooks"].map((n) => (
-            <span
-              key={n}
-              className="font-display text-sm font-medium tracking-wide text-white/50"
-            >
+            <span key={n} className="font-display text-sm font-medium tracking-wide text-white/50">
               {n}
             </span>
           ))}
@@ -755,13 +711,11 @@ function AskAtlas() {
         <div>
           <Eyebrow>Ask Atlas</Eyebrow>
           <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-            Ask your company{" "}
-            <span className="text-gradient-atlas">anything.</span>
+            Ask your company <span className="text-gradient-atlas">anything.</span>
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-white/60">
-            When the company becomes legible to AI, operational questions
-            become answerable. Atlas reads across every claim, document, and
-            interview — then responds with context.
+            When the company becomes legible to AI, operational questions become answerable. Atlas
+            reads across every claim, document, and interview — then responds with context.
           </p>
         </div>
 
@@ -808,10 +762,7 @@ function AskAtlas() {
                     <span className="text-white">18 unresolved supplement opportunities</span>.
                   </p>
 
-                  <div
-                    className="animate-reveal"
-                    style={{ animationDelay: "200ms" }}
-                  >
+                  <div className="animate-reveal" style={{ animationDelay: "200ms" }}>
                     <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-atlas-cyan/80">
                       Primary patterns detected
                     </div>
@@ -836,9 +787,7 @@ function AskAtlas() {
                     <div className="mb-1 font-mono text-[10px] uppercase tracking-[0.22em] text-atlas-cyan">
                       Recommended action
                     </div>
-                    <p className="text-white">
-                      Review the 6 highest-value claims first.
-                    </p>
+                    <p className="text-white">Review the 6 highest-value claims first.</p>
                   </div>
                 </div>
               </div>
@@ -846,9 +795,7 @@ function AskAtlas() {
 
             <div className="border-t border-white/5 p-4">
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-atlas-void/50 px-4 py-3">
-                <span className="font-mono text-[11px] text-white/40">
-                  Ask Atlas anything…
-                </span>
+                <span className="font-mono text-[11px] text-white/40">Ask Atlas anything…</span>
                 <div className="ml-auto flex h-7 w-7 items-center justify-center rounded-md bg-atlas-cyan/20 text-atlas-cyan">
                   →
                 </div>
@@ -882,12 +829,11 @@ function QueryableArchitecture() {
       <div className="mx-auto max-w-3xl text-center">
         <Eyebrow>The architecture</Eyebrow>
         <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-          Your business becomes{" "}
-          <span className="text-gradient-atlas">queryable.</span>
+          Your business becomes <span className="text-gradient-atlas">queryable.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60">
-          Every operational event becomes context. Nothing gets lost between
-          systems, people, or weeks.
+          Every operational event becomes context. Nothing gets lost between systems, people, or
+          weeks.
         </p>
       </div>
 
@@ -979,13 +925,11 @@ function SupplementIntelligence() {
         <div>
           <Eyebrow>Supplement Intelligence</Eyebrow>
           <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-            Find the revenue{" "}
-            <span className="text-gradient-atlas">hiding in the claim.</span>
+            Find the revenue <span className="text-gradient-atlas">hiding in the claim.</span>
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-white/60">
-            Atlas connects claim context, documentation, estimates, adjuster
-            interactions, and historical outcomes to surface opportunities that
-            may require attention.
+            Atlas connects claim context, documentation, estimates, adjuster interactions, and
+            historical outcomes to surface opportunities that may require attention.
           </p>
         </div>
 
@@ -1010,9 +954,7 @@ function SupplementIntelligence() {
                 <AtlasMark className="h-4 w-4" />
                 Claim Intelligence
               </div>
-              <span className="font-mono text-[10px] text-atlas-cyan">
-                scanning
-              </span>
+              <span className="font-mono text-[10px] text-atlas-cyan">scanning</span>
             </div>
 
             <div className="p-6 md:p-8">
@@ -1053,9 +995,7 @@ function SupplementIntelligence() {
                       <span
                         className={
                           "h-1.5 w-1.5 rounded-full " +
-                          (tint === "cyan"
-                            ? "bg-atlas-cyan"
-                            : "bg-atlas-violet")
+                          (tint === "cyan" ? "bg-atlas-cyan" : "bg-atlas-violet")
                         }
                       />
                       <span className="text-[14px] text-white/85">{s}</span>
@@ -1115,9 +1055,9 @@ function ClosedLoop() {
           <span className="text-gradient-atlas">to closed loop.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-balance text-[15px] leading-relaxed text-white/60">
-          Restoration companies don't lose revenue because their teams are
-          careless. They lose it because knowledge is scattered across a dozen
-          tools and no system can see all of it at once. Atlas closes the loop.
+          Restoration companies don't lose revenue because their teams are careless. They lose it
+          because knowledge is scattered across a dozen tools and no system can see all of it at
+          once. Atlas closes the loop.
         </p>
       </div>
 
@@ -1202,9 +1142,7 @@ function ClosedLoopColumn({
         <ul className="mt-6 space-y-3.5">
           {items.map((item) => (
             <li key={item} className="flex items-start gap-3">
-              <span
-                className={"mt-2 h-1.5 w-1.5 shrink-0 rounded-full " + dotClass}
-              />
+              <span className={"mt-2 h-1.5 w-1.5 shrink-0 rounded-full " + dotClass} />
               <span
                 className={
                   "text-[14px] leading-relaxed " +
@@ -1223,8 +1161,6 @@ function ClosedLoopColumn({
 
 /* ------------------------------------------------------------------ */
 
-
-
 function ExecutiveIntelligence() {
   const signals = [
     { v: "$42,380", l: "Revenue at risk", tint: "cyan", size: "xl" },
@@ -1238,10 +1174,7 @@ function ExecutiveIntelligence() {
       <div className="mx-auto max-w-3xl">
         <Eyebrow>Executive Intelligence</Eyebrow>
         <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-          See the business{" "}
-          <span className="text-gradient-atlas">
-            before it becomes a problem.
-          </span>
+          See the business <span className="text-gradient-atlas">before it becomes a problem.</span>
         </h2>
       </div>
 
@@ -1269,9 +1202,7 @@ function ExecutiveIntelligence() {
             <div
               className={
                 "font-display font-semibold leading-none tracking-tight " +
-                (s.size === "xl"
-                  ? "text-6xl md:text-7xl lg:text-8xl"
-                  : "text-5xl md:text-6xl") +
+                (s.size === "xl" ? "text-6xl md:text-7xl lg:text-8xl" : "text-5xl md:text-6xl") +
                 " " +
                 (s.tint === "cyan"
                   ? "text-atlas-cyan"
@@ -1314,12 +1245,11 @@ function AtlasLearns() {
       <div className="mx-auto max-w-3xl text-center">
         <Eyebrow>Institutional Memory</Eyebrow>
         <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-          Atlas remembers{" "}
-          <span className="text-gradient-atlas">what the company learns.</span>
+          Atlas remembers <span className="text-gradient-atlas">what the company learns.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60">
-          Atlas does not simply store records. It builds context — and gets
-          smarter with every claim the company operates.
+          Atlas does not simply store records. It builds context — and gets smarter with every claim
+          the company operates.
         </p>
       </div>
 
@@ -1346,8 +1276,7 @@ function AtlasLearns() {
               >
                 <span
                   className={
-                    "font-mono text-[10px] " +
-                    (isLearn ? "text-atlas-violet" : "text-atlas-cyan")
+                    "font-mono text-[10px] " + (isLearn ? "text-atlas-violet" : "text-atlas-cyan")
                   }
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -1407,9 +1336,7 @@ function ProductScene({
         <h3 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-white md:text-4xl lg:text-5xl">
           {title}
         </h3>
-        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/60">
-          {copy}
-        </p>
+        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/60">{copy}</p>
       </div>
       <div className={reverse ? "lg:order-1" : ""}>
         <div className="relative">
@@ -1451,9 +1378,7 @@ function ClaimInterface() {
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
               Policy
             </div>
-            <div className="mt-1 font-mono text-[13px] text-white/80">
-              #SF-1234567
-            </div>
+            <div className="mt-1 font-mono text-[13px] text-white/80">#SF-1234567</div>
           </div>
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
@@ -1465,9 +1390,7 @@ function ClaimInterface() {
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
               Revenue at risk
             </div>
-            <div className="mt-1 font-display text-lg font-semibold text-atlas-cyan">
-              $5,200
-            </div>
+            <div className="mt-1 font-display text-lg font-semibold text-atlas-cyan">$5,200</div>
           </div>
         </div>
 
@@ -1499,9 +1422,7 @@ function SupplementScene() {
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
           <AtlasMark className="h-4 w-4" /> Supplement Analysis
         </div>
-        <span className="font-mono text-[10px] text-atlas-violet">
-          pattern match · 87%
-        </span>
+        <span className="font-mono text-[10px] text-atlas-violet">pattern match · 87%</span>
       </div>
       <div className="space-y-4 p-6">
         <div className="rounded-lg border border-white/5 bg-atlas-void/60 p-4">
@@ -1509,8 +1430,8 @@ function SupplementScene() {
             Documentation signal
           </div>
           <p className="text-[13px] text-white/85">
-            Roof underlayment referenced in estimate but not documented in
-            inspection set. Historically indicates missed line item.
+            Roof underlayment referenced in estimate but not documented in inspection set.
+            Historically indicates missed line item.
           </p>
         </div>
         <div className="rounded-lg border border-white/5 bg-atlas-void/60 p-4">
@@ -1518,17 +1439,14 @@ function SupplementScene() {
             Estimate signal
           </div>
           <p className="text-[13px] text-white/85">
-            Xactimate line "R&amp;R Drip Edge" priced 18% below regional 30-day
-            median.
+            Xactimate line "R&amp;R Drip Edge" priced 18% below regional 30-day median.
           </p>
         </div>
         <div className="rounded-lg border border-atlas-violet/30 bg-atlas-violet/[0.06] p-4">
           <div className="mb-1 font-mono text-[10px] uppercase tracking-[0.22em] text-atlas-violet">
             Opportunity surfaced
           </div>
-          <p className="text-[14px] text-white">
-            Consider supplement review — 4 signals aligned.
-          </p>
+          <p className="text-[14px] text-white">Consider supplement review — 4 signals aligned.</p>
         </div>
       </div>
     </div>
@@ -1542,9 +1460,7 @@ function AdjusterScene() {
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
           <AtlasMark className="h-4 w-4" /> Adjuster Intelligence
         </div>
-        <span className="font-mono text-[10px] text-white/40">
-          14 historical claims
-        </span>
+        <span className="font-mono text-[10px] text-white/40">14 historical claims</span>
       </div>
       <div className="p-6">
         <div className="flex items-center gap-4">
@@ -1552,9 +1468,7 @@ function AdjusterScene() {
             MR
           </div>
           <div>
-            <div className="font-display text-lg font-semibold text-white">
-              M. Reynolds
-            </div>
+            <div className="font-display text-lg font-semibold text-white">M. Reynolds</div>
             <div className="font-mono text-[11px] text-white/50">
               Independent Adjuster · Southeast region
             </div>
@@ -1567,10 +1481,7 @@ function AdjusterScene() {
             { v: "68%", l: "Approval rate", tint: "signal" },
             { v: "High", l: "Doc scrutiny", tint: "violet" },
           ].map((s) => (
-            <div
-              key={s.l}
-              className="rounded-md border border-white/5 bg-atlas-void/50 p-3"
-            >
+            <div key={s.l} className="rounded-md border border-white/5 bg-atlas-void/50 p-3">
               <div
                 className={
                   "font-display text-xl font-semibold " +
@@ -1595,8 +1506,8 @@ function AdjusterScene() {
             Atlas memory
           </div>
           <p className="text-[13px] text-white/80">
-            Typically requests supplementary photos before approving roofing
-            supplements over $4,000.
+            Typically requests supplementary photos before approving roofing supplements over
+            $4,000.
           </p>
         </div>
       </div>
@@ -1610,8 +1521,7 @@ function ProductExperience() {
       <div className="mx-auto max-w-3xl">
         <Eyebrow>Product experience</Eyebrow>
         <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-          Experience Atlas{" "}
-          <span className="text-gradient-atlas">in action.</span>
+          Experience Atlas <span className="text-gradient-atlas">in action.</span>
         </h2>
       </div>
 
@@ -1656,14 +1566,12 @@ function Integrations() {
         <div>
           <Eyebrow>Integrations</Eyebrow>
           <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-white md:text-4xl lg:text-5xl">
-            Atlas sits above{" "}
-            <span className="text-gradient-atlas">your existing stack.</span>
+            Atlas sits above <span className="text-gradient-atlas">your existing stack.</span>
           </h2>
         </div>
         <p className="max-w-md text-[15px] leading-relaxed text-white/60 md:justify-self-end">
-          Atlas connects operational context across the systems your company
-          already uses. It becomes the intelligence layer above the operational
-          stack — not a replacement on day one.
+          Atlas connects operational context across the systems your company already uses. It
+          becomes the intelligence layer above the operational stack — not a replacement on day one.
         </p>
       </div>
 
@@ -1778,4 +1686,3 @@ function LandingPage() {
     </div>
   );
 }
-

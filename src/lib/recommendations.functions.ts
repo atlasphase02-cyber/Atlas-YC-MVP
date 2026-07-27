@@ -18,23 +18,43 @@ export const generateRecommendations = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<Recommendation[]> => {
     const { supabase } = context;
     const now = Date.now();
-    const startToday = new Date(); startToday.setHours(0, 0, 0, 0);
+    const startToday = new Date();
+    startToday.setHours(0, 0, 0, 0);
     const endToday = new Date(startToday.getTime() + DAY);
 
     const [claimsRes, supplsRes, apptsRes] = await Promise.all([
-      supabase.from("claims").select("id, claim_number, status, amount_cents, updated_at, description")
-        .in("status", OPEN).order("updated_at", { ascending: true }).limit(50),
-      supabase.from("supplements").select("id, claim_id, status, total_cents, updated_at, summary")
-        .in("status", ["draft", "submitted"]).order("updated_at", { ascending: true }).limit(50),
-      supabase.from("appointments").select("id, title, starts_at, who, claim_id")
-        .gte("starts_at", startToday.toISOString()).lt("starts_at", endToday.toISOString())
-        .order("starts_at").limit(10),
+      supabase
+        .from("claims")
+        .select("id, claim_number, status, amount_cents, updated_at, description")
+        .in("status", OPEN)
+        .order("updated_at", { ascending: true })
+        .limit(50),
+      supabase
+        .from("supplements")
+        .select("id, claim_id, status, total_cents, updated_at, summary")
+        .in("status", ["draft", "submitted"])
+        .order("updated_at", { ascending: true })
+        .limit(50),
+      supabase
+        .from("appointments")
+        .select("id, title, starts_at, who, claim_id")
+        .gte("starts_at", startToday.toISOString())
+        .lt("starts_at", endToday.toISOString())
+        .order("starts_at")
+        .limit(10),
     ]);
 
     const recs: Recommendation[] = [];
 
     // 1. Stalled claims (no update in 5+ days)
-    for (const c of ((claimsRes.data ?? []) as Array<{ id: string; claim_number: string; status: string; amount_cents: number; updated_at: string; description: string | null }>)) {
+    for (const c of (claimsRes.data ?? []) as Array<{
+      id: string;
+      claim_number: string;
+      status: string;
+      amount_cents: number;
+      updated_at: string;
+      description: string | null;
+    }>) {
       const ageDays = Math.floor((now - new Date(c.updated_at).getTime()) / DAY);
       if (ageDays >= 5) {
         recs.push({
@@ -49,7 +69,14 @@ export const generateRecommendations = createServerFn({ method: "GET" })
     }
 
     // 2. Aging draft supplements (3+ days)
-    for (const s of ((supplsRes.data ?? []) as Array<{ id: string; claim_id: string; status: string; total_cents: number; updated_at: string; summary: string | null }>)) {
+    for (const s of (supplsRes.data ?? []) as Array<{
+      id: string;
+      claim_id: string;
+      status: string;
+      total_cents: number;
+      updated_at: string;
+      summary: string | null;
+    }>) {
       const ageDays = Math.floor((now - new Date(s.updated_at).getTime()) / DAY);
       if (s.status === "draft" && ageDays >= 3) {
         recs.push({
@@ -74,7 +101,13 @@ export const generateRecommendations = createServerFn({ method: "GET" })
     }
 
     // 3. Appointments today
-    for (const a of ((apptsRes.data ?? []) as Array<{ id: string; title: string; starts_at: string; who: string | null; claim_id: string | null }>)) {
+    for (const a of (apptsRes.data ?? []) as Array<{
+      id: string;
+      title: string;
+      starts_at: string;
+      who: string | null;
+      claim_id: string | null;
+    }>) {
       const when = new Date(a.starts_at);
       if (when.getTime() < now) continue;
       const mins = Math.round((when.getTime() - now) / 60000);
@@ -84,13 +117,18 @@ export const generateRecommendations = createServerFn({ method: "GET" })
           priority: mins <= 60 ? "high" : "medium",
           title: `${a.title} in ${mins < 60 ? `${mins}m` : `${Math.round(mins / 60)}h`}`,
           why: `${when.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}${a.who ? ` — ${a.who}` : ""}`,
-          action: a.claim_id ? { label: "Open claim", route: `/app/claims/${a.claim_id}` } : { label: "Open calendar", route: "/app/calendar" },
+          action: a.claim_id
+            ? { label: "Open claim", route: `/app/claims/${a.claim_id}` }
+            : { label: "Open calendar", route: "/app/calendar" },
         });
       }
     }
 
     // Sort by priority then amount
     const rank = { high: 0, medium: 1, low: 2 };
-    recs.sort((a, b) => rank[a.priority] - rank[b.priority] || (b.amount_cents ?? 0) - (a.amount_cents ?? 0));
+    recs.sort(
+      (a, b) =>
+        rank[a.priority] - rank[b.priority] || (b.amount_cents ?? 0) - (a.amount_cents ?? 0),
+    );
     return recs.slice(0, 8);
   });

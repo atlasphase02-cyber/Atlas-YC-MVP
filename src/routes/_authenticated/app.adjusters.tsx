@@ -4,8 +4,21 @@ import { Card, CardContent } from "@/components/ui/card.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
 import { LoadingList, EmptyState, ErrorState } from "@/components/data-states.tsx";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { db, currentUserId, type Adjuster, type Carrier } from "@/lib/atlas-db.ts";
@@ -22,7 +35,8 @@ function Page() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["adjusters", "list"],
     queryFn: async (): Promise<Row[]> => {
-      const { data, error } = await db.from("adjusters")
+      const { data, error } = await db
+        .from("adjusters")
         .select("*, carriers(name), claims(id)")
         .order("name");
       if (error) throw error;
@@ -31,7 +45,11 @@ function Page() {
   });
 
   return (
-    <PageStub title="Adjusters" subtitle={`${data?.length ?? 0} active relationships`} askPrompt="Which adjusters respond fastest this month?">
+    <PageStub
+      title="Adjusters"
+      subtitle={`${data?.length ?? 0} active relationships`}
+      askPrompt="Which adjusters respond fastest this month?"
+    >
       <div className="flex justify-end">
         <NewAdjusterDialog onCreated={() => qc.invalidateQueries({ queryKey: ["adjusters"] })} />
       </div>
@@ -51,7 +69,9 @@ function Page() {
                 </div>
                 <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
                   <span>{a.claims.length} active claims</span>
-                  <span className="font-mono">{a.avg_response_hours != null ? `avg ${a.avg_response_hours}h` : "—"}</span>
+                  <span className="font-mono">
+                    {a.avg_response_hours != null ? `avg ${a.avg_response_hours}h` : "—"}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -98,22 +118,57 @@ function NewAdjusterDialog({ onCreated }: { onCreated: () => void }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><Button size="sm"><Plus className="mr-1 h-4 w-4" /> New adjuster</Button></DialogTrigger>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <Plus className="mr-1 h-4 w-4" /> New adjuster
+        </Button>
+      </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>New adjuster</DialogTitle></DialogHeader>
+        <DialogHeader>
+          <DialogTitle>New adjuster</DialogTitle>
+        </DialogHeader>
         <div className="space-y-3">
-          <Input aria-label="Adjuster name" placeholder="Name" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+          <Input
+            aria-label="Adjuster name"
+            placeholder="Name"
+            value={f.name}
+            onChange={(e) => setF({ ...f, name: e.target.value })}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input aria-label="Email" type="email" placeholder="Email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
-            <Input aria-label="Phone" type="tel" placeholder="Phone" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
+            <Input
+              aria-label="Email"
+              type="email"
+              placeholder="Email"
+              value={f.email}
+              onChange={(e) => setF({ ...f, email: e.target.value })}
+            />
+            <Input
+              aria-label="Phone"
+              type="tel"
+              placeholder="Phone"
+              value={f.phone}
+              onChange={(e) => setF({ ...f, phone: e.target.value })}
+            />
           </div>
           <Select value={f.carrier_id} onValueChange={(v) => setF({ ...f, carrier_id: v })}>
-            <SelectTrigger aria-label="Carrier"><SelectValue placeholder={carriers.data?.length ? "Select carrier" : "No carriers yet"} /></SelectTrigger>
-            <SelectContent>{carriers.data?.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+            <SelectTrigger aria-label="Carrier">
+              <SelectValue
+                placeholder={carriers.data?.length ? "Select carrier" : "No carriers yet"}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {carriers.data?.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </div>
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button onClick={() => create.mutate()} disabled={!f.name.trim() || create.isPending}>
             {create.isPending ? "Saving..." : "Save adjuster"}
           </Button>

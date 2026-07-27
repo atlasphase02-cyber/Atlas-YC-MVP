@@ -8,33 +8,37 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root.tsx'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml.ts'
-import { Route as AuthRouteImport } from './routes/auth.tsx'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route.tsx'
-import { Route as IndexRouteImport } from './routes'
-import { Route as ApiChatRouteImport } from './routes/api/chat.ts'
-import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app.tsx'
-import { Route as ApiAiSupplementGenerateRouteImport } from './routes/api/ai.supplement-generate.ts'
-import { Route as ApiAiInterviewSummaryRouteImport } from './routes/api/ai.interview-summary.ts'
-import { Route as ApiAiExecutiveSummaryRouteImport } from './routes/api/ai.executive-summary.ts'
-import { Route as AuthenticatedAppSupplementsRouteImport } from './routes/_authenticated/app.supplements.tsx'
-import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings.tsx'
-import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications.tsx'
-import { Route as AuthenticatedAppInterviewRouteImport } from './routes/_authenticated/app.interview.tsx'
-import { Route as AuthenticatedAppDocumentsRouteImport } from './routes/_authenticated/app.documents.tsx'
-import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers.tsx'
-import { Route as AuthenticatedAppClaimsRouteImport } from './routes/_authenticated/app.claims.tsx'
-import { Route as AuthenticatedAppCalendarRouteImport } from './routes/_authenticated/app.calendar.tsx'
-import { Route as AuthenticatedAppAnalyticsRouteImport } from './routes/_authenticated/app.analytics.tsx'
-import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin.tsx'
-import { Route as AuthenticatedAppAdjustersRouteImport } from './routes/_authenticated/app.adjusters.tsx'
-import { Route as AuthenticatedAppSupplementsSupplementIdRouteImport } from './routes/_authenticated/app.supplements.$supplementId.tsx'
-import { Route as AuthenticatedAppClaimsClaimIdRouteImport } from './routes/_authenticated/app.claims.$claimId.tsx'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedAppAdjustersRouteImport } from './routes/_authenticated/app.adjusters'
+import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
+import { Route as AuthenticatedAppAnalyticsRouteImport } from './routes/_authenticated/app.analytics'
+import { Route as AuthenticatedAppCalendarRouteImport } from './routes/_authenticated/app.calendar'
+import { Route as AuthenticatedAppClaimsRouteImport } from './routes/_authenticated/app.claims'
+import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
+import { Route as AuthenticatedAppDocumentsRouteImport } from './routes/_authenticated/app.documents'
+import { Route as AuthenticatedAppInterviewRouteImport } from './routes/_authenticated/app.interview'
+import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
+import { Route as AuthenticatedAppSupplementsRouteImport } from './routes/_authenticated/app.supplements'
+import { Route as ApiAiExecutiveSummaryRouteImport } from './routes/api/ai.executive-summary'
+import { Route as ApiAiInterviewSummaryRouteImport } from './routes/api/ai.interview-summary'
+import { Route as ApiAiSupplementGenerateRouteImport } from './routes/api/ai.supplement-generate'
+import { Route as AuthenticatedAppClaimsClaimIdRouteImport } from './routes/_authenticated/app.claims.$claimId'
+import { Route as AuthenticatedAppSupplementsSupplementIdRouteImport } from './routes/_authenticated/app.supplements.$supplementId'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -42,18 +46,9 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
@@ -61,43 +56,43 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiAiSupplementGenerateRoute = ApiAiSupplementGenerateRouteImport.update({
-  id: '/api/ai/supplement-generate',
-  path: '/api/ai/supplement-generate',
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAiInterviewSummaryRoute = ApiAiInterviewSummaryRouteImport.update({
-  id: '/api/ai/interview-summary',
-  path: '/api/ai/interview-summary',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAppAdjustersRoute =
+  AuthenticatedAppAdjustersRouteImport.update({
+    id: '/adjusters',
+    path: '/adjusters',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAdminRoute = AuthenticatedAppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const ApiAiExecutiveSummaryRoute = ApiAiExecutiveSummaryRouteImport.update({
-  id: '/api/ai/executive-summary',
-  path: '/api/ai/executive-summary',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAppAnalyticsRoute =
+  AuthenticatedAppAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppCalendarRoute =
+  AuthenticatedAppCalendarRouteImport.update({
+    id: '/calendar',
+    path: '/calendar',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppClaimsRoute = AuthenticatedAppClaimsRouteImport.update({
+  id: '/claims',
+  path: '/claims',
+  getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedAppSupplementsRoute =
-  AuthenticatedAppSupplementsRouteImport.update({
-    id: '/supplements',
-    path: '/supplements',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppSettingsRoute =
-  AuthenticatedAppSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppNotificationsRoute =
-  AuthenticatedAppNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppInterviewRoute =
-  AuthenticatedAppInterviewRouteImport.update({
-    id: '/interview',
-    path: '/interview',
+const AuthenticatedAppCustomersRoute =
+  AuthenticatedAppCustomersRouteImport.update({
+    id: '/customers',
+    path: '/customers',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppDocumentsRoute =
@@ -106,51 +101,56 @@ const AuthenticatedAppDocumentsRoute =
     path: '/documents',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppCustomersRoute =
-  AuthenticatedAppCustomersRouteImport.update({
-    id: '/customers',
-    path: '/customers',
+const AuthenticatedAppInterviewRoute =
+  AuthenticatedAppInterviewRouteImport.update({
+    id: '/interview',
+    path: '/interview',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppClaimsRoute = AuthenticatedAppClaimsRouteImport.update({
-  id: '/claims',
-  path: '/claims',
-  getParentRoute: () => AuthenticatedAppRoute,
+const AuthenticatedAppNotificationsRoute =
+  AuthenticatedAppNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSupplementsRoute =
+  AuthenticatedAppSupplementsRouteImport.update({
+    id: '/supplements',
+    path: '/supplements',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const ApiAiExecutiveSummaryRoute = ApiAiExecutiveSummaryRouteImport.update({
+  id: '/api/ai/executive-summary',
+  path: '/api/ai/executive-summary',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAppCalendarRoute =
-  AuthenticatedAppCalendarRouteImport.update({
-    id: '/calendar',
-    path: '/calendar',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppAnalyticsRoute =
-  AuthenticatedAppAnalyticsRouteImport.update({
-    id: '/analytics',
-    path: '/analytics',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppAdminRoute = AuthenticatedAppAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedAppRoute,
+const ApiAiInterviewSummaryRoute = ApiAiInterviewSummaryRouteImport.update({
+  id: '/api/ai/interview-summary',
+  path: '/api/ai/interview-summary',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAppAdjustersRoute =
-  AuthenticatedAppAdjustersRouteImport.update({
-    id: '/adjusters',
-    path: '/adjusters',
-    getParentRoute: () => AuthenticatedAppRoute,
+const ApiAiSupplementGenerateRoute = ApiAiSupplementGenerateRouteImport.update({
+  id: '/api/ai/supplement-generate',
+  path: '/api/ai/supplement-generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAppClaimsClaimIdRoute =
+  AuthenticatedAppClaimsClaimIdRouteImport.update({
+    id: '/$claimId',
+    path: '/$claimId',
+    getParentRoute: () => AuthenticatedAppClaimsRoute,
   } as any)
 const AuthenticatedAppSupplementsSupplementIdRoute =
   AuthenticatedAppSupplementsSupplementIdRouteImport.update({
     id: '/$supplementId',
     path: '/$supplementId',
     getParentRoute: () => AuthenticatedAppSupplementsRoute,
-  } as any)
-const AuthenticatedAppClaimsClaimIdRoute =
-  AuthenticatedAppClaimsClaimIdRouteImport.update({
-    id: '/$claimId',
-    path: '/$claimId',
-    getParentRoute: () => AuthenticatedAppClaimsRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -310,18 +310,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -331,18 +324,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app': {
@@ -352,88 +345,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/ai/supplement-generate': {
-      id: '/api/ai/supplement-generate'
-      path: '/api/ai/supplement-generate'
-      fullPath: '/api/ai/supplement-generate'
-      preLoaderRoute: typeof ApiAiSupplementGenerateRouteImport
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/ai/interview-summary': {
-      id: '/api/ai/interview-summary'
-      path: '/api/ai/interview-summary'
-      fullPath: '/api/ai/interview-summary'
-      preLoaderRoute: typeof ApiAiInterviewSummaryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/ai/executive-summary': {
-      id: '/api/ai/executive-summary'
-      path: '/api/ai/executive-summary'
-      fullPath: '/api/ai/executive-summary'
-      preLoaderRoute: typeof ApiAiExecutiveSummaryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/app/supplements': {
-      id: '/_authenticated/app/supplements'
-      path: '/supplements'
-      fullPath: '/app/supplements'
-      preLoaderRoute: typeof AuthenticatedAppSupplementsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/settings': {
-      id: '/_authenticated/app/settings'
-      path: '/settings'
-      fullPath: '/app/settings'
-      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/notifications': {
-      id: '/_authenticated/app/notifications'
-      path: '/notifications'
-      fullPath: '/app/notifications'
-      preLoaderRoute: typeof AuthenticatedAppNotificationsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/interview': {
-      id: '/_authenticated/app/interview'
-      path: '/interview'
-      fullPath: '/app/interview'
-      preLoaderRoute: typeof AuthenticatedAppInterviewRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/documents': {
-      id: '/_authenticated/app/documents'
-      path: '/documents'
-      fullPath: '/app/documents'
-      preLoaderRoute: typeof AuthenticatedAppDocumentsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/customers': {
-      id: '/_authenticated/app/customers'
-      path: '/customers'
-      fullPath: '/app/customers'
-      preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/claims': {
-      id: '/_authenticated/app/claims'
-      path: '/claims'
-      fullPath: '/app/claims'
-      preLoaderRoute: typeof AuthenticatedAppClaimsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/calendar': {
-      id: '/_authenticated/app/calendar'
-      path: '/calendar'
-      fullPath: '/app/calendar'
-      preLoaderRoute: typeof AuthenticatedAppCalendarRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/analytics': {
-      id: '/_authenticated/app/analytics'
-      path: '/analytics'
-      fullPath: '/app/analytics'
-      preLoaderRoute: typeof AuthenticatedAppAnalyticsRouteImport
+    '/_authenticated/app/adjusters': {
+      id: '/_authenticated/app/adjusters'
+      path: '/adjusters'
+      fullPath: '/app/adjusters'
+      preLoaderRoute: typeof AuthenticatedAppAdjustersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/admin': {
@@ -443,19 +366,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppAdminRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/adjusters': {
-      id: '/_authenticated/app/adjusters'
-      path: '/adjusters'
-      fullPath: '/app/adjusters'
-      preLoaderRoute: typeof AuthenticatedAppAdjustersRouteImport
+    '/_authenticated/app/analytics': {
+      id: '/_authenticated/app/analytics'
+      path: '/analytics'
+      fullPath: '/app/analytics'
+      preLoaderRoute: typeof AuthenticatedAppAnalyticsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/supplements/$supplementId': {
-      id: '/_authenticated/app/supplements/$supplementId'
-      path: '/$supplementId'
-      fullPath: '/app/supplements/$supplementId'
-      preLoaderRoute: typeof AuthenticatedAppSupplementsSupplementIdRouteImport
-      parentRoute: typeof AuthenticatedAppSupplementsRoute
+    '/_authenticated/app/calendar': {
+      id: '/_authenticated/app/calendar'
+      path: '/calendar'
+      fullPath: '/app/calendar'
+      preLoaderRoute: typeof AuthenticatedAppCalendarRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/claims': {
+      id: '/_authenticated/app/claims'
+      path: '/claims'
+      fullPath: '/app/claims'
+      preLoaderRoute: typeof AuthenticatedAppClaimsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/customers': {
+      id: '/_authenticated/app/customers'
+      path: '/customers'
+      fullPath: '/app/customers'
+      preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/documents': {
+      id: '/_authenticated/app/documents'
+      path: '/documents'
+      fullPath: '/app/documents'
+      preLoaderRoute: typeof AuthenticatedAppDocumentsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/interview': {
+      id: '/_authenticated/app/interview'
+      path: '/interview'
+      fullPath: '/app/interview'
+      preLoaderRoute: typeof AuthenticatedAppInterviewRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/notifications': {
+      id: '/_authenticated/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AuthenticatedAppNotificationsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/supplements': {
+      id: '/_authenticated/app/supplements'
+      path: '/supplements'
+      fullPath: '/app/supplements'
+      preLoaderRoute: typeof AuthenticatedAppSupplementsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/api/ai/executive-summary': {
+      id: '/api/ai/executive-summary'
+      path: '/api/ai/executive-summary'
+      fullPath: '/api/ai/executive-summary'
+      preLoaderRoute: typeof ApiAiExecutiveSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/interview-summary': {
+      id: '/api/ai/interview-summary'
+      path: '/api/ai/interview-summary'
+      fullPath: '/api/ai/interview-summary'
+      preLoaderRoute: typeof ApiAiInterviewSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/supplement-generate': {
+      id: '/api/ai/supplement-generate'
+      path: '/api/ai/supplement-generate'
+      fullPath: '/api/ai/supplement-generate'
+      preLoaderRoute: typeof ApiAiSupplementGenerateRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/claims/$claimId': {
       id: '/_authenticated/app/claims/$claimId'
@@ -463,6 +456,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/claims/$claimId'
       preLoaderRoute: typeof AuthenticatedAppClaimsClaimIdRouteImport
       parentRoute: typeof AuthenticatedAppClaimsRoute
+    }
+    '/_authenticated/app/supplements/$supplementId': {
+      id: '/_authenticated/app/supplements/$supplementId'
+      path: '/$supplementId'
+      fullPath: '/app/supplements/$supplementId'
+      preLoaderRoute: typeof AuthenticatedAppSupplementsSupplementIdRouteImport
+      parentRoute: typeof AuthenticatedAppSupplementsRoute
     }
   }
 }
@@ -552,3 +552,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

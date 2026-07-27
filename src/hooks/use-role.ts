@@ -11,7 +11,10 @@ export function useRoles() {
     let mounted = true;
     (async () => {
       const { data: u } = await supabase.auth.getUser();
-      if (!u.user) { if (mounted) setLoading(false); return; }
+      if (!u.user) {
+        if (mounted) setLoading(false);
+        return;
+      }
       const { data } = await supabase
         .from("user_roles" as never)
         .select("role")
@@ -20,7 +23,9 @@ export function useRoles() {
       setRoles(((data as { role: AppRole }[] | null) ?? []).map((r) => r.role));
       setLoading(false);
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return {

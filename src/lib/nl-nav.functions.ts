@@ -7,7 +7,10 @@ import { z } from "zod";
 const IntentSchema = z.object({
   intent: z.enum(["navigate", "open_entity", "create", "ask", "clarify"]),
   route: z.string().nullable().optional(),
-  entity_type: z.enum(["claims", "customers", "adjusters", "supplements", "documents", "appointments"]).nullable().optional(),
+  entity_type: z
+    .enum(["claims", "customers", "adjusters", "supplements", "documents", "appointments"])
+    .nullable()
+    .optional(),
   entity_query: z.string().nullable().optional(),
   filters: z.record(z.string(), z.string()).nullable().optional(),
   clarify_question: z.string().nullable().optional(),
@@ -45,7 +48,8 @@ export const parseNlCommand = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: { query: string }) => ({ query: String(i.query || "").slice(0, 500) }))
   .handler(async ({ data }): Promise<NlIntent> => {
-    if (!data.query.trim()) return { intent: "clarify", clarify_question: "What would you like to do?" };
+    if (!data.query.trim())
+      return { intent: "clarify", clarify_question: "What would you like to do?" };
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
     const gateway = createLovableAiGatewayProvider(key);

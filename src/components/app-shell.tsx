@@ -53,7 +53,15 @@ const NAV = [
 
 type NavItem = (typeof NAV)[number] & { exact?: boolean };
 
-export function AppShell({ children, title, subtitle }: { children: ReactNode; title: string; subtitle?: string }) {
+export function AppShell({
+  children,
+  title,
+  subtitle,
+}: {
+  children: ReactNode;
+  title: string;
+  subtitle?: string;
+}) {
   const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
@@ -146,13 +154,27 @@ export function AppShell({ children, title, subtitle }: { children: ReactNode; t
         {/* Sidebar — desktop */}
         <aside className="hidden md:flex w-64 flex-col border-r border-border bg-atlas-navy/40 backdrop-blur-xl">
           <div className="px-6 py-6">
-            <Link to="/app" className="font-display text-xl text-gradient-atlas">ATLAS</Link>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">AI Operations</p>
+            <Link to="/app" className="font-display text-xl text-gradient-atlas">
+              ATLAS
+            </Link>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+              AI Operations
+            </p>
           </div>
           <NavList />
           <div className="p-3 border-t border-border">
-            <div className="px-3 py-2 text-xs text-muted-foreground truncate" title={email ?? undefined}>{email}</div>
-            <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>
+            <div
+              className="px-3 py-2 text-xs text-muted-foreground truncate"
+              title={email ?? undefined}
+            >
+              {email}
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start"
+              onClick={handleSignOut}
+            >
               <LogOut className="mr-2 h-4 w-4" aria-hidden="true" /> Sign out
             </Button>
           </div>
@@ -173,16 +195,28 @@ export function AppShell({ children, title, subtitle }: { children: ReactNode; t
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72 p-0 bg-atlas-navy/95 backdrop-blur-xl border-border">
+              <SheetContent
+                side="left"
+                className="w-72 p-0 bg-atlas-navy/95 backdrop-blur-xl border-border"
+              >
                 <SheetHeader className="px-6 py-6 text-left">
-                  <SheetTitle className="font-display text-xl text-gradient-atlas">ATLAS</SheetTitle>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">AI Operations</p>
+                  <SheetTitle className="font-display text-xl text-gradient-atlas">
+                    ATLAS
+                  </SheetTitle>
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                    AI Operations
+                  </p>
                 </SheetHeader>
                 <div className="flex flex-col h-[calc(100dvh-96px)]">
                   <NavList onNavigate={() => setMobileNavOpen(false)} />
                   <div className="p-3 border-t border-border">
                     <div className="px-3 py-2 text-xs text-muted-foreground truncate">{email}</div>
-                    <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start"
+                      onClick={handleSignOut}
+                    >
                       <LogOut className="mr-2 h-4 w-4" aria-hidden="true" /> Sign out
                     </Button>
                   </div>
@@ -192,7 +226,9 @@ export function AppShell({ children, title, subtitle }: { children: ReactNode; t
 
             <div className="min-w-0 flex-1">
               <h1 className="font-display text-lg sm:text-xl truncate">{title}</h1>
-              {subtitle && <p className="text-xs sm:text-sm text-muted-foreground truncate">{subtitle}</p>}
+              {subtitle && (
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">{subtitle}</p>
+              )}
             </div>
 
             {/* Palette: full pill on ≥sm, icon on mobile */}
@@ -215,7 +251,11 @@ export function AppShell({ children, title, subtitle }: { children: ReactNode; t
               <Search className="h-5 w-5" />
             </Button>
           </header>
-          <main id="main-content" tabIndex={-1} className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto focus:outline-none">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto focus:outline-none"
+          >
             {children}
           </main>
         </div>

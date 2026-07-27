@@ -5,7 +5,8 @@ const GATEWAY = "https://ai.gateway.lovable.dev/v1/embeddings";
 const MODEL = "google/gemini-embedding-2";
 
 export type SemanticHit = {
-  entity_type: "claims" | "customers" | "documents" | "supplements" | "notes" | "adjusters" | "conversations";
+  entity_type:
+    "claims" | "customers" | "documents" | "supplements" | "notes" | "adjusters" | "conversations";
   entity_id: string;
   label: string;
   sub: string | null;
@@ -40,7 +41,15 @@ export const semanticSearch = createServerFn({ method: "POST" })
       p_query: pgv,
       p_owner: context.userId,
       p_limit: data.limit,
-      p_types: data.types ?? ["claims", "customers", "documents", "supplements", "notes", "adjusters", "conversations"],
+      p_types: data.types ?? [
+        "claims",
+        "customers",
+        "documents",
+        "supplements",
+        "notes",
+        "adjusters",
+        "conversations",
+      ],
     });
     if (error) throw error;
     return (rows ?? []) as SemanticHit[];

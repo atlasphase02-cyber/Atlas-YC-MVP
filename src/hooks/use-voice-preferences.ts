@@ -17,7 +17,11 @@ export function useVoicePreferences() {
     queryFn: async (): Promise<VoicePreferences | null> => {
       const uid = await currentUserId();
       if (!uid) return null;
-      const { data, error } = await db.from("voice_preferences").select("*").eq("user_id", uid).maybeSingle();
+      const { data, error } = await db
+        .from("voice_preferences")
+        .select("*")
+        .eq("user_id", uid)
+        .maybeSingle();
       if (error) throw error;
       return (data as VoicePreferences | null) ?? null;
     },

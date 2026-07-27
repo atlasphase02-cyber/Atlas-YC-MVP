@@ -44,9 +44,13 @@ function Page() {
         <>
           <Card className="panel-atlas border-0">
             <CardContent className="p-5">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Pipeline value</p>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                Pipeline value
+              </p>
               <p className="font-display text-3xl mt-2">{formatMoney(total)}</p>
-              <p className="text-xs text-muted-foreground mt-1">{data?.length ?? 0} claims tracked</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {data?.length ?? 0} claims tracked
+              </p>
             </CardContent>
           </Card>
           <div className="grid gap-3">
@@ -55,7 +59,9 @@ function Page() {
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{CLAIM_STATUS_LABEL[status]}</p>
-                    <p className="text-xs text-muted-foreground">{v.count} claim{v.count !== 1 ? "s" : ""}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {v.count} claim{v.count !== 1 ? "s" : ""}
+                    </p>
                   </div>
                   <p className="text-sm font-mono">{formatMoney(v.total)}</p>
                 </CardContent>
@@ -85,7 +91,7 @@ function ExecutiveSummary() {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok || !res.body) throw new Error(await res.text() || "Failed");
+      if (!res.ok || !res.body) throw new Error((await res.text()) || "Failed");
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       let acc = "";
@@ -108,17 +114,30 @@ function ExecutiveSummary() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
             <Sparkles className="h-4 w-4 text-atlas-signal shrink-0" aria-hidden="true" />
-            <p className="text-xs uppercase tracking-widest text-muted-foreground truncate">Executive summary</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground truncate">
+              Executive summary
+            </p>
           </div>
           <Button size="sm" onClick={generate} disabled={loading}>
-            {loading ? <><Loader2 className="mr-2 h-3 w-3 animate-spin" aria-hidden="true" />Generating…</> : text ? "Regenerate" : "Generate"}
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-3 w-3 animate-spin" aria-hidden="true" />
+                Generating…
+              </>
+            ) : text ? (
+              "Regenerate"
+            ) : (
+              "Generate"
+            )}
           </Button>
         </div>
         {err && <p className="text-xs text-destructive">{err}</p>}
         {text ? (
           <p className="text-sm leading-relaxed whitespace-pre-wrap">{text}</p>
         ) : !loading && !err ? (
-          <p className="text-xs text-muted-foreground">Get an AI briefing on pipeline health, stalled claims, and recommended next actions.</p>
+          <p className="text-xs text-muted-foreground">
+            Get an AI briefing on pipeline health, stalled claims, and recommended next actions.
+          </p>
         ) : null}
       </CardContent>
     </Card>

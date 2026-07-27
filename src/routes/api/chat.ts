@@ -19,7 +19,11 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const body = (await request.json()) as { messages?: UIMessage[]; context?: string; systemExtra?: string };
+        const body = (await request.json()) as {
+          messages?: UIMessage[];
+          context?: string;
+          systemExtra?: string;
+        };
         if (!Array.isArray(body.messages)) {
           return new Response("Messages required", { status: 400 });
         }

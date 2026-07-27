@@ -16,9 +16,7 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         // Only public, indexable routes. Authenticated app (/app/*) and /auth
         // are excluded — they require sign-in and are noindex.
-        const entries: SitemapEntry[] = [
-          { path: "/", changefreq: "weekly", priority: "1.0" },
-        ];
+        const entries: SitemapEntry[] = [{ path: "/", changefreq: "weekly", priority: "1.0" }];
 
         const urls = entries.map((e) =>
           [

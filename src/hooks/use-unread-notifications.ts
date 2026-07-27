@@ -27,7 +27,9 @@ export function useUnreadNotifications() {
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "notifications", filter: `owner_id=eq.${uid}` },
-          () => { refresh(); },
+          () => {
+            refresh();
+          },
         )
         .subscribe();
     })();

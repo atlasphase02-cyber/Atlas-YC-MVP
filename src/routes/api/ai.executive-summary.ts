@@ -8,12 +8,14 @@ export const Route = createFileRoute("/api/ai/executive-summary")({
     handlers: {
       POST: async ({ request }) => {
         const authHeader = request.headers.get("authorization");
-        if (!authHeader?.startsWith("Bearer ")) return new Response("Unauthorized", { status: 401 });
+        if (!authHeader?.startsWith("Bearer "))
+          return new Response("Unauthorized", { status: 401 });
 
         const key = process.env.LOVABLE_API_KEY;
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY;
-        if (!key || !supabaseUrl || !supabaseKey) return new Response("Server misconfigured", { status: 500 });
+        if (!key || !supabaseUrl || !supabaseKey)
+          return new Response("Server misconfigured", { status: 500 });
 
         const token = authHeader.slice(7);
         const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -21,7 +23,11 @@ export const Route = createFileRoute("/api/ai/executive-summary")({
             headers: { Authorization: `Bearer ${token}` },
             fetch: (input, init) => {
               const h = new Headers(init?.headers);
-              if (supabaseKey.startsWith("sb_") && h.get("Authorization") === `Bearer ${supabaseKey}`) h.delete("Authorization");
+              if (
+                supabaseKey.startsWith("sb_") &&
+                h.get("Authorization") === `Bearer ${supabaseKey}`
+              )
+                h.delete("Authorization");
               h.set("apikey", supabaseKey);
               return fetch(input, { ...init, headers: h });
             },
@@ -29,14 +35,26 @@ export const Route = createFileRoute("/api/ai/executive-summary")({
           auth: { persistSession: false, autoRefreshToken: false },
         });
 
-        const claims = ((await supabase.from("claims").select("status, amount_cents, updated_at")).data ?? []) as {
-          status: string; amount_cents: number; updated_at: string;
+        const claims = ((await supabase.from("claims").select("status, amount_cents, updated_at"))
+          .data ?? []) as {
+          status: string;
+          amount_cents: number;
+          updated_at: string;
         }[];
-        const sups = ((await supabase.from("supplements").select("status, total_cents")).data ?? []) as {
-          status: string; total_cents: number;
+        const sups = ((await supabase.from("supplements").select("status, total_cents")).data ??
+          []) as {
+          status: string;
+          total_cents: number;
         }[];
-        const appts = ((await supabase.from("appointments").select("kind, starts_at").gte("starts_at", new Date().toISOString()).limit(20)).data ?? []) as {
-          kind: string; starts_at: string;
+        const appts = ((
+          await supabase
+            .from("appointments")
+            .select("kind, starts_at")
+            .gte("starts_at", new Date().toISOString())
+            .limit(20)
+        ).data ?? []) as {
+          kind: string;
+          starts_at: string;
         }[];
 
         const byStatus: Record<string, number> = {};

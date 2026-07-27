@@ -17,7 +17,8 @@ function Page() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["supplements", "list"],
     queryFn: async (): Promise<Row[]> => {
-      const { data, error } = await db.from("supplements")
+      const { data, error } = await db
+        .from("supplements")
         .select("*, claims(claim_number)")
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -44,12 +45,19 @@ function Page() {
       });
       if (error) throw error;
     },
-    onSuccess: () => { toast.success("Draft created"); qc.invalidateQueries({ queryKey: ["supplements"] }); },
+    onSuccess: () => {
+      toast.success("Draft created");
+      qc.invalidateQueries({ queryKey: ["supplements"] });
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
   return (
-    <PageStub title="Supplements" subtitle={`${data?.length ?? 0} • Est. ${formatMoney(total)}`} askPrompt="Generate today's supplement drafts">
+    <PageStub
+      title="Supplements"
+      subtitle={`${data?.length ?? 0} • Est. ${formatMoney(total)}`}
+      askPrompt="Generate today's supplement drafts"
+    >
       <div className="flex justify-end">
         <Button size="sm" onClick={() => generate.mutate()} disabled={generate.isPending}>
           {generate.isPending ? "Drafting..." : "New draft"}
@@ -63,18 +71,41 @@ function Page() {
       {!isLoading && !error && (data?.length ?? 0) > 0 && (
         <div className="grid gap-3">
           {data!.map((s) => (
-            <Link key={s.id} to="/app/supplements/$supplementId" params={{ supplementId: s.id }} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg">
+            <Link
+              key={s.id}
+              to="/app/supplements/$supplementId"
+              params={{ supplementId: s.id }}
+              className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg"
+            >
               <Card className="panel-atlas border-0 hover:bg-white/5 transition">
                 <CardContent className="p-4 grid grid-cols-[minmax(0,1fr)_auto] sm:flex sm:items-center sm:justify-between gap-x-4 gap-y-2">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-sm font-medium truncate">{s.claims?.claim_number ?? "—"}</p>
-                      {s.ai_confidence != null && <Badge variant="secondary">AI • {s.ai_confidence}%</Badge>}
-                      <Badge variant={s.status === "approved" ? "default" : s.status === "denied" ? "destructive" : "secondary"}>{s.status}</Badge>
+                      <p className="text-sm font-medium truncate">
+                        {s.claims?.claim_number ?? "—"}
+                      </p>
+                      {s.ai_confidence != null && (
+                        <Badge variant="secondary">AI • {s.ai_confidence}%</Badge>
+                      )}
+                      <Badge
+                        variant={
+                          s.status === "approved"
+                            ? "default"
+                            : s.status === "denied"
+                              ? "destructive"
+                              : "secondary"
+                        }
+                      >
+                        {s.status}
+                      </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{s.summary || "No summary"}</p>
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                      {s.summary || "No summary"}
+                    </p>
                   </div>
-                  <p className="text-sm font-mono text-atlas-signal shrink-0 self-start sm:self-center">{formatMoney(s.total_cents)}</p>
+                  <p className="text-sm font-mono text-atlas-signal shrink-0 self-start sm:self-center">
+                    {formatMoney(s.total_cents)}
+                  </p>
                 </CardContent>
               </Card>
             </Link>

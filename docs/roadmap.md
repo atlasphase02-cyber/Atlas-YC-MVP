@@ -10,114 +10,63 @@
 - Standardized imports
 - Created documentation structure
 
-## Phase 2: Authentication (In Progress)
+## Phase 2: Authentication ✅ Completed
 
-### Goal
-Implement complete Supabase authentication system with no legacy backend dependencies.
+- Supabase Auth (email/password + Google OAuth via Lovable Cloud)
+- Login, signup, logout with validation and error/loading states
+- Session persistence and auto-refresh
+- Protected routes with `_authenticated` route guard
+- Role-based authorization (`useRoles` hook, `user_roles` table)
+- Admin-only routes
 
-### Checkpoints
-- [ ] Supabase connection
-- [ ] Environment variables
-- [ ] Client configuration
-- [ ] Health check
-- [ ] Authentication UI
-- [ ] Sign up
-- [ ] Login
-- [ ] Validation
-- [ ] Error states
-- [ ] Loading states
-- [ ] Session management
-- [ ] Persistent login
-- [ ] Refresh handling
-- [ ] Logout
-- [ ] Authorization
-- [ ] Protected routes
-- [ ] Redirects
-- [ ] Role scaffolding (if needed later)
-- [ ] Testing
-  - [ ] New account creation
-  - [ ] Email verification (if enabled)
-  - [ ] Password reset
-  - [ ] Login after refresh
-  - [ ] Logout
-  - [ ] Expired session handling
+## Phase 3: Supabase Database Integration ✅ Completed
 
-### Implementation Notes
-- Use Supabase Auth only
-- Treat repository as UI-first
-- Do not reuse any previous Atlas backend, business logic, API routes, database schema, or authentication code
-- Create only the minimum Supabase configuration required for existing UI to function correctly
-- Authentication must be modular, secure, production-ready, and easy to extend
+- Full PostgreSQL schema with RLS policies (10 migration files)
+- Tables: profiles, user_roles, carriers, adjusters, customers, claims,
+  supplements, supplement_items, documents, document_versions, photos,
+  notes, claim_comments, claim_events, appointments, notifications,
+  notification_preferences, conversations, chat_messages, voice_preferences,
+  interviews, audit_log, settings, embedding_queue
+- Storage buckets: atlas-documents, atlas-photos
+- Dashboard, Claims, Customers, Adjusters, Supplements, Documents,
+  Calendar, Notifications, Settings, Admin — all connected to live data
+- TanStack Query for caching and optimistic updates
 
-## Phase 3: Supabase Database Integration
+## Phase 4: AI Integration ✅ Completed
 
-### Goal
-Connect UI components to Supabase database with proper schema and RLS policies.
+- AI Gateway via Lovable Cloud (`google/gemini-3.5-flash`)
+- AI Assistant sidebar with persistent conversations, speech recognition, TTS
+- AI Interview (conversational claim intake with transcript/summary/action items)
+- Supplement AI generation (structured output via `generateObject`)
+- Executive summary AI endpoint
+- Semantic search via Gemini embeddings + Supabase `atlas_semantic_search` RPC
+- Embedding queue processor (background batching)
+- Natural-language command palette navigation (⌘K)
+- Recommendations engine (stalled claims, draft supplements, upcoming appointments)
+- Voice experience on landing page
 
-### Tasks
-- [ ] Analyze existing UI data requirements
-- [ ] Design database schema based on UI needs
-- [ ] Create Supabase migrations
-- [ ] Implement Row Level Security policies
-- [ ] Connect dashboard to database
-- [ ] Connect claims management to database
-- [ ] Connect supplements to database
-- [ ] Connect documents to database
-- [ ] Connect customers to database
-- [ ] Connect calendar to database
-- [ ] Connect notifications to database
-- [ ] Connect admin panel to database
-- [ ] Test all data flows
-- [ ] Implement error handling
-- [ ] Add loading states
-
-### Implementation Notes
-- Build schema around UI requirements, not legacy backend
-- Start with minimum viable schema
-- Add RLS policies from day one
-- Use Supabase types for TypeScript safety
-
-## Phase 4: AI Integration
-
-### Goal
-Implement AI-powered features with proper server-side architecture.
-
-### Tasks
-- [ ] Configure AI gateway
-- [ ] Implement chat API endpoint
-- [ ] Connect AI assistant to database
-- [ ] Implement semantic search
-- [ ] Connect AI interview to database
-- [ ] Implement document embeddings
-- [ ] Connect voice assistant
-- [ ] Implement recommendations engine
-- [ ] Add AI analytics
-- [ ] Test all AI features
-- [ ] Implement error handling
-- [ ] Add rate limiting
-- [ ] Monitor AI costs
-
-### Implementation Notes
-- Only after authentication and database are working
-- Server-side AI calls for security
-- Proper error handling and fallbacks
-- Cost monitoring and limits
-
-## Phase 5: Production Readiness
+## Phase 5: Production Readiness (In Progress)
 
 ### Goal
 Prepare application for production deployment.
 
 ### Tasks
+- [x] TypeScript compiles with zero errors
+- [x] ESLint passes with zero errors
+- [x] Production build succeeds
+- [x] `.env.example` created
+- [x] `.env` in `.gitignore`
 - [ ] Security audit
 - [ ] Performance optimization
-- [ ] Error monitoring setup
+- [ ] Error monitoring setup (Sentry)
 - [ ] Analytics integration
 - [ ] SEO optimization
 - [ ] Accessibility audit
 - [ ] Mobile responsiveness testing
 - [ ] Cross-browser testing
 - [ ] Load testing
+- [ ] E2E testing with Playwright
+- [ ] Component testing with Vitest
 - [ ] Backup strategy
 - [ ] Disaster recovery plan
 - [ ] Documentation completion
@@ -130,7 +79,8 @@ Deploy to production and monitor.
 ### Tasks
 - [ ] Domain configuration
 - [ ] SSL setup
-- [ ] Production environment setup
+- [ ] Production environment setup (Vercel)
+- [ ] Supabase project provisioning
 - [ ] Database migration to production
 - [ ] Final testing in production
 - [ ] User onboarding flow
@@ -165,20 +115,16 @@ Deploy to production and monitor.
 - [ ] Image optimization pipeline
 - [ ] Bundle size optimization
 
-## Dependencies
-
-This roadmap assumes completion of each phase before moving to the next. Each phase builds upon the previous one's foundation.
-
 ## Timeline Estimates
 
 - Phase 1: ✅ Completed (1 day)
-- Phase 2: 2-3 days
-- Phase 3: 3-5 days
-- Phase 4: 3-5 days
+- Phase 2: ✅ Completed
+- Phase 3: ✅ Completed
+- Phase 4: ✅ Completed
 - Phase 5: 2-3 days
 - Phase 6: 1-2 days
 
-**Total Estimated Time: 11-18 days**
+**Total Remaining: 3-5 days**
 
 ## Notes
 

@@ -6,13 +6,15 @@ import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server.ts";
 const Schema = z.object({
   summary: z.string(),
   confidence: z.number(),
-  items: z.array(z.object({
-    description: z.string(),
-    quantity: z.number(),
-    unit_price_cents: z.number(),
-    confidence: z.number(),
-    reason: z.string(),
-  })),
+  items: z.array(
+    z.object({
+      description: z.string(),
+      quantity: z.number(),
+      unit_price_cents: z.number(),
+      confidence: z.number(),
+      reason: z.string(),
+    }),
+  ),
   recommendations: z.array(z.string()),
 });
 
@@ -31,9 +33,13 @@ export const Route = createFileRoute("/api/ai/supplement-generate")({
         const gateway = createLovableAiGatewayProvider(key);
         const model = gateway("google/gemini-3.5-flash");
 
-        const existing = (body.existing_items ?? [])
-          .map((i) => `- ${i.description} (qty ${i.quantity} @ $${(i.unit_price_cents / 100).toFixed(2)})`)
-          .join("\n") || "(none)";
+        const existing =
+          (body.existing_items ?? [])
+            .map(
+              (i) =>
+                `- ${i.description} (qty ${i.quantity} @ $${(i.unit_price_cents / 100).toFixed(2)})`,
+            )
+            .join("\n") || "(none)";
 
         try {
           const { output } = await generateText({

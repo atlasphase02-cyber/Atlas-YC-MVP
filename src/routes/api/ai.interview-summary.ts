@@ -5,11 +5,13 @@ import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server.ts";
 
 const Schema = z.object({
   summary: z.string(),
-  action_items: z.array(z.object({
-    title: z.string(),
-    owner: z.string().nullable(),
-    due: z.string().nullable(),
-  })),
+  action_items: z.array(
+    z.object({
+      title: z.string(),
+      owner: z.string().nullable(),
+      due: z.string().nullable(),
+    }),
+  ),
   insights: z.string(),
 });
 
@@ -30,7 +32,8 @@ export const Route = createFileRoute("/api/ai/interview-summary")({
         const model = gateway("google/gemini-3.5-flash");
 
         const conv = body.transcript
-          .map((t) => `${t.role === "user" ? "Customer" : "Atlas"}: ${t.content}`).join("\n");
+          .map((t) => `${t.role === "user" ? "Customer" : "Atlas"}: ${t.content}`)
+          .join("\n");
 
         try {
           const { output } = await generateText({

@@ -12,7 +12,10 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Atlas" },
-      { name: "description", content: "Sign in to Atlas — the AI operating system for insurance restoration." },
+      {
+        name: "description",
+        content: "Sign in to Atlas — the AI operating system for insurance restoration.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -80,7 +83,10 @@ function AuthPage() {
   return (
     <div className="min-h-screen bg-atmosphere flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        <Link to="/" className="mb-8 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+        <Link
+          to="/"
+          className="mb-8 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+        >
           <span className="font-display text-lg text-gradient-atlas">ATLAS</span>
         </Link>
         <div className="panel-atlas rounded-2xl p-8">
@@ -112,16 +118,36 @@ function AuthPage() {
             {mode === "signup" && (
               <div>
                 <Label htmlFor="fullName">Full name</Label>
-                <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                <Input
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                />
               </div>
             )}
             <div>
               <Label htmlFor="email">Work email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} />
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              />
             </div>
             <Button type="submit" disabled={busy} className="w-full">
               {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -141,7 +167,9 @@ function AuthPage() {
           </p>
         </div>
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          <Link to="/" className="hover:text-foreground transition">← Back to atlas.ai</Link>
+          <Link to="/" className="hover:text-foreground transition">
+            ← Back to atlas.ai
+          </Link>
         </p>
       </div>
     </div>
