@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense, lazy, useEffect, useState } from "react";
-import atlasMarkAsset from "@/assets/atlas-mark.asset.json";
-import atlasLogoFullAsset from "@/assets/atlas-logo-full.asset.json";
 
 // Voice components pull in the Web Speech + AI SDK bridge; split them out
 // of the landing critical path so the hero paints instantly.
@@ -30,8 +28,8 @@ export const Route = createFileRoute("/")({
         content:
           "Atlas is the AI operating system for insurance restoration companies. It sits above your existing stack — CRM, estimating, claims, photos, documents, emails, notes, supplements, team knowledge — and turns it into one connected intelligence layer.",
       },
-      { property: "og:image", content: atlasLogoFullAsset.url },
-      { name: "twitter:image", content: atlasLogoFullAsset.url },
+      { property: "og:image", content: "/atlas-logo.png" },
+      { name: "twitter:image", content: "/atlas-logo.png" },
     ],
   }),
   component: LandingPage,
@@ -56,7 +54,7 @@ function openPilot() {
 function AtlasMark({ className = "" }: { className?: string }) {
   return (
     <img
-      src={atlasMarkAsset.url}
+      src="/atlas-logo.png"
       alt=""
       aria-hidden
       className={"select-none " + className}

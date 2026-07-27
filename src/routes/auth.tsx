@@ -87,6 +87,7 @@ function AuthPage() {
           to="/"
           className="mb-8 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
         >
+          <img src="/atlas-logo.png" alt="Atlas" className="h-10 w-10 object-contain" />
           <span className="font-display text-lg text-gradient-atlas">ATLAS</span>
         </Link>
         <div className="panel-atlas rounded-2xl p-8">

@@ -154,8 +154,9 @@ export function AppShell({
         {/* Sidebar — desktop */}
         <aside className="hidden md:flex w-64 flex-col border-r border-border bg-atlas-navy/40 backdrop-blur-xl">
           <div className="px-6 py-6">
-            <Link to="/app" className="font-display text-xl text-gradient-atlas">
-              ATLAS
+            <Link to="/app" className="flex items-center gap-2">
+              <img src="/atlas-logo.png" alt="Atlas" className="h-8 w-8 object-contain" />
+              <span className="font-display text-xl text-gradient-atlas">ATLAS</span>
             </Link>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
               AI Operations
@@ -200,8 +201,9 @@ export function AppShell({
                 className="w-72 p-0 bg-atlas-navy/95 backdrop-blur-xl border-border"
               >
                 <SheetHeader className="px-6 py-6 text-left">
-                  <SheetTitle className="font-display text-xl text-gradient-atlas">
-                    ATLAS
+                  <SheetTitle className="flex items-center gap-2">
+                    <img src="/atlas-logo.png" alt="Atlas" className="h-8 w-8 object-contain" />
+                    <span className="font-display text-xl text-gradient-atlas">ATLAS</span>
                   </SheetTitle>
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                     AI Operations
