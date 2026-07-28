@@ -45,7 +45,7 @@ function DemoPage() {
       {phase === "claim" && (
         <ClaimWorkspace onBack={() => setPhase("dashboard")} onComplete={() => setPhase("complete")} />
       )}
-      {phase === "complete" && <DemoComplete onReturn={() => setPhase("dashboard")} />}
+      {phase === "complete" && <DemoComplete onReturn={() => setPhase("dashboard")} totalApproved={totalApproved} />}
     </div>
   );
 }
@@ -1386,7 +1386,7 @@ function SessionHistory() {
 // ─────────────────────────────────────────────
 // 14. DEMO COMPLETE
 // ─────────────────────────────────────────────
-function DemoComplete({ onReturn }: { onReturn: () => void }) {
+function DemoComplete({ onReturn, totalApproved }: { onReturn: () => void; totalApproved: number }) {
   return (
     <div className="min-h-dvh flex items-center justify-center p-4">
       <motion.div initial={{ opacity: 1, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }} className="max-w-2xl w-full">
@@ -1404,7 +1404,7 @@ function DemoComplete({ onReturn }: { onReturn: () => void }) {
 
           <p className="text-lg text-muted-foreground mb-2">
             Atlas helped identify{" "}
-            <span className="text-atlas-signal font-bold">{formatMoney(DEMO_METRICS.potentialRevenue)}</span>{" "}
+            <span className="text-atlas-signal font-bold">{formatMoney(totalApproved)}</span>{" "}
             in additional recoverable revenue
           </p>
           <p className="text-sm text-muted-foreground mb-8">
